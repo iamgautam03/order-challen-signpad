@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>viewOrder</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        .div, #items {
+            margin: 1%;
+            padding: 1%;
+        }
+        div.order-details{
+            border: 1px solid black;
+            border-radius: 5px;
+        }
+        h3 {
+            margin: 1%;
+        }
+        h4 ,h5{
+            margin: 1%;
+            font-weight: 500;
+        }
+        .grid{
+            display: grid;
+            grid-template-columns: 80% 20%;
+        }
+        button {
+            margin: 1%;
+            height: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="div">
+        <h1 id="companyName">Order Challan</h1>    
+        <address id="companyAddress"></address>
+    </div>
+    <hr>
+
+    <div class="order-details div">
+        <div class="grid">
+            <h3 id="receiver-name"></h3>
+            <h3 id="order-id"></h3>
+            <h4 id="receiver-email"></h4>
+            <h4 id="order-date"></h4>
+        </div>
+        <hr/>
+        <div class="grid">
+                
+            <h4>Order Details:</h4>
+            <h4 id="order-total"></h4>
+            <div id="items">
+            </div>
+        </div>
+        <hr/>
+        <a href="DashBoard.html"><button>Back to DashBoard</button></a>
+    </div>
+    <script>
+        var BusinessData={
+            businessName:"Expert Logistics India Pvt. Ltd.",
+            businessAddr:"Street:2/f, 2nd Floor, Naaz Cinema Bldg, Lamington Road, Lamington Road \nCity: Mumbai \nState/province/area: Maharashtra \nPhone number 02223861571 \nZip code 400004 \nCountry calling code +91 \nCountry India"
+        }
+        const status = [];
+        status[0]= "sign pending";
+        status[1]= "siged";
+
+        function setBusinessDetails(){
+            document.getElementById('companyName').innerHTML=BusinessData.businessName;
+            document.getElementById('companyAddress').innerHTML=BusinessData.businessAddr.replaceAll(
+                '\n',"<br>"
+            );
+        }
+        setBusinessDetails()
+
+        function getItemNode(item) {
+            var details = document.createElement('details');
+            var summery = document.createElement('summary');
+
+            summery.textContent = item.itemName;
+
+            var h5Qty = document.createElement('h5');
+            h5Qty.classList.add('qty');
+            h5Qty.textContent = "Quantity: " + item.qty;
+
+            var h5Price = document.createElement('h5');
+            h5Price.classList.add('price');
+            h5Price.textContent = "Price: " + item.price;
+            
+            details.appendChild(summery);
+            details.appendChild(h5Qty);
+            details.appendChild(h5Price);
+
+            return details;
+        }
+
+        function loadOrderDetails() {
+            const dataFromSv = {
+                orderDetails: [
+                    {itemName: 'KitKat', qty: 3, price:300 },
+                    {itemName: 'IceCream', qty: 4, price:130 },
+                    {itemName: 'Chocobar', qty: 2, price:40 }
+                ],
+                "orderId":"1",
+                "Receiver'sName":"Jayden London",
+                "Receiver'sEmail":"Jayden_London7891@typill.biz",
+                "orderdate":"5/3/9013",
+                "Total":"648300.18",
+                "status":"1"
+            }
+
+            dataFromSv.orderDetails.forEach(item => {
+                document.getElementById('items').appendChild(getItemNode(item));
+            });
+
+
+            document.getElementById('receiver-name').textContent = "Receiver's Name: " + dataFromSv["Receiver'sName"];
+            document.getElementById('receiver-email').textContent = "Receiver's Email: " + dataFromSv["Receiver'sEmail"];
+            document.getElementById('order-id').textContent = "OrderID: " + dataFromSv.orderId;
+            document.getElementById('order-date').textContent = "Order Date: " + dataFromSv.orderdate;
+            document.getElementById('order-total').textContent = "Total: " + dataFromSv.Total;
+
+        }
+        loadOrderDetails()
+    </script>
+</body>
+</html>
