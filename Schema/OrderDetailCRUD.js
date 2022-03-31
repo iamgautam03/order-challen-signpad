@@ -19,7 +19,7 @@ OrderDetail.create({
     ItemPrice:50000
 })
 .then(Order=>{
-    console.log(OrderDetail);
+    console.log(Order);
 })
 .catch(error=>{
     console.log(error);
@@ -27,7 +27,7 @@ OrderDetail.create({
 
 OrderDetail.find({})
 .then((Order)=>{
-    console.log(OrderDetail);
+    console.log(Order);
 })
 .catch(err=>{
     console.log(err);

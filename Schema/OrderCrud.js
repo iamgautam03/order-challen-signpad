@@ -23,7 +23,7 @@ await Order.create({
     ReceiverName:"Rocco Jennson",
     ReceiverAddress:"Rocco_Jennson3043@deons.tech",
     ReceiverGSTIN:"07AAWFR0503R1ZK",
-    CompanyId:"6241ad05d521e497ca523e57",
+    CompanyId:"6245dec4d74b3dac7f8aa034",
     GeneratedLink:"orderchallansign.com/?t=0fd2e237-5290-4503-9863-26495ae7097d"
 })
 .then(Order=>{
