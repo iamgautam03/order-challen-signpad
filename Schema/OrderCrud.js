@@ -12,7 +12,11 @@ connection.then((db)=>{
     console.log(err);
 })
 
-Order.create({
+const OrderId = new mongoose.Types.ObjectId();
+
+const crudOperatoin =  async ()=>{
+await Order.create({
+    _id:OrderId,
     OrderId:"90001",
     OrderDate: new Date(),
     OrderTotal:100000,
@@ -28,8 +32,8 @@ Order.create({
 .catch(error=>{
     console.log(error);
 })
-
-Order.find({})
+console.log("finding data")
+await Order.find({})
 .then((Order)=>{
     console.log(Order);
 })
@@ -37,3 +41,44 @@ Order.find({})
     console.log(err);
 })
 
+console.log("updating signStatus");
+await Order.findByIdAndUpdate(OrderId,{
+    SignStatus:true
+})
+.then(order=>{
+    console.log(order)
+})
+.catch(err=>{
+    console.log(err);
+})
+console.log("finding data by id")
+await Order.findById(OrderId)
+.then(order=>{
+    console.log(order);
+})
+.catch(err=>{
+    console.log(err);
+})
+
+console.log("delete order by id")
+await Order.findByIdAndDelete(OrderId)
+.then(order=>{
+    console.log(order);
+})
+.catch(err=>{
+    console.log(err);
+})
+
+
+console.log("finding data by id")
+await Order.findById(OrderId)
+.then(order=>{
+    console.log(order);
+})
+.catch(err=>{
+    console.log(err);
+})
+
+}
+
+crudOperatoin()
