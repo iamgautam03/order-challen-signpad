@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Login</title>
+</head>
+<body>
+<center>
+    <h2>Login to SignOrder.com</h2>
+    <form onsubmit="return authenticate()" action="DashBoard.html" method="post" name="loginform">
+        <label>Enter E-mail : </label><br/>
+        <input type="textbox" name="email"><br/>
+        <label>Enter password : </label><br/>
+        <input type="password" name="password"><br/>
+        <input type="submit" name="loginbtn" value="Login">
+        <a href="register.html"><input type="button" name="registerbtn" value="Register"></a>
+    </form>
+</center>
+
+<script>
+    
+    function authenticate()
+    {
+        var form = document.forms["loginform"];
+        var email = form["email"].value;
+        var password = form["password"].value;
+        if(email=="xyz@gmail.com" && password=="12345678")
+        {
+            alert("Login Successful");
+            return true;
+        }
+        else
+        {
+            alert("Email does not exist. Please register your account first");
+        }
+        return false;
+    }
+</script>
+</body>
+</html>
