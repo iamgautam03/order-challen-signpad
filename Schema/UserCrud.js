@@ -19,38 +19,44 @@ const userInfo = {
 }
 
 const createUser = async (userInfo) => {
-    try {
-        const user = await User.create({
+    await User.create({
             CompanyId: new mongoose.Types.ObjectId(),
             Email : userInfo.Email,
             Password: userInfo.Password,
             BusinessName: userInfo.BusinessName,
             BusinessAddress: userInfo.BusinessAddress,
             GSTIN: userInfo.GSTIN,
-        });
-        console.log('user created');
-        console.log(user);
-    }
-    catch (err) {
-        console.error(err);
-    }
+        })
+        .then(user=>{
+            console.log('user created');
+            console.log(user);
+        })
+        .catch(err=>{
+            console.log(err);
+        })
 }
 
 const findUser = async (email, passsword) => {
-    try {
-        const user = await User.find({Email: email, Password: passsword});
-        if (user.length)
+ 
+    await User.find({Email: email, Password: passsword})
+    .then(user=>{
+        if (user)
             console.log(user);
         else
             throw new Error('Could not find such user');
-    }
-    catch (err) {
-        console.error(err);
-    }
+    })
+    .catch(err=>{
+        console.log(err);
+    })
+     
+
+}
+async function call(){
+    console.log("Creating New User:");
+    await createUser(userInfo);
+
+    console.log("Finding User By Email and Password (i.e Login):");
+    await findUser("adam&john@gmail.com", "adam_john_1234");
 }
 
-console.log("Creating New User:");
-createUser(userInfo);
-
-console.log("Finding User By Email and Password (i.e Login):");
-findUser("adam_john@gmail.com", "adam_john_1234");
+call()

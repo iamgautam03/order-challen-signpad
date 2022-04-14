@@ -12,6 +12,13 @@ connection.then((db)=>{
     console.log(err);
 })
 
+const OrderDetails={
+    OrderId: mongoose.Types.ObjectId("6245bc21b58e84a6909d295d"),
+    ItemName:"Mi TV",
+    ItemQuantity:1,
+    ItemPrice:50000
+}
+
 OrderDetail.create({
     OrderId: mongoose.Types.ObjectId("6245bc21b58e84a6909d295d"),
     ItemName:"Mi TV",

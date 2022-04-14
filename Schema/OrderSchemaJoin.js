@@ -56,11 +56,12 @@ const crudOperatoin =  async ()=>{
 
    const data = await Order.aggregate([
         { $lookup :{
-            from: "OrderDetails",
-            localField: "_id",
-            foreignField: "OrderId",
-            as: "OrderDetails"
-        }}
+            from: 'orderdetails',
+            localField: '_id',
+            foreignField: 'OrderId',
+            as: 'orderdetails'
+          }
+        }
     ])
 
     console.log(data)
