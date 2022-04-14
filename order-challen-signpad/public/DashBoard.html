@@ -277,7 +277,60 @@
 
         }
 
-        fillUpOrderChallanTable()
+        // fillUpOrderChallanTable()
+        function updateOrderChallanTable(){
+            fetch('/api/orders')
+            .then(Response=>Response.json())
+            .then((orders)=>{
+                console.log(orders);
+                var tbody = document.getElementById("tableBody");
+                const orderOfdisplay=["OrderId","ReceiverName","ReceiverAddress","OrderDate","OrderTotal","SignStatus"];
+
+
+                orders.forEach((order)=>{
+                    var tr = document.createElement('tr');
+                    for(var i=0;i<orderOfdisplay.length;i++){
+                        var td = document.createElement('td');
+                        if(orderOfdisplay[i] === "SignStatus"){
+                            td.innerHTML=status[order[orderOfdisplay[i]]?1:0];
+                            tr.appendChild(td);
+                            continue;
+                        }
+                        if(orderOfdisplay[i]=== "OrderDate"){
+                            td.innerHTML= new Intl.DateTimeFormat('en-US',{
+                                year:'numeric',
+                                month:'long',
+                                day:'2-digit'
+                            }).format(new Date(order.OrderDate));
+                            tr.appendChild(td);
+                            continue;
+                        }
+                        td.innerHTML=order[orderOfdisplay[i]];
+                        tr.appendChild(td);
+                    }
+                    // for (const [key, value] of Object.entries(order)) {
+                    //     var td = document.createElement('td');
+                    //     if(key === "status"){
+                    //         td.innerHTML=status[value];
+                    //         tr.appendChild(td);
+                    //         continue;
+                    //     }
+                    //     td.innerHTML=value;
+                    //     tr.appendChild(td);
+                    // }
+                    var td = document.createElement('td');
+
+                    var button =  document.createElement('a');
+                    button.innerHTML="<button>view Order</button>";
+                    button.href="viewOrder.html?OrderId="+order[orderOfdisplay[0]];
+                    td.appendChild(button)
+                    tr.appendChild(td);
+                    tbody.appendChild(tr);  
+                }) 
+            })
+            .catch(err=>console.log(data))
+        }
+        updateOrderChallanTable()
 
     </script>
 </body>

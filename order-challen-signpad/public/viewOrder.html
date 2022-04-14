@@ -80,15 +80,15 @@
             var details = document.createElement('details');
             var summery = document.createElement('summary');
 
-            summery.textContent = item.itemName;
+            summery.textContent = item.ItemName;
 
             var h5Qty = document.createElement('h5');
             h5Qty.classList.add('qty');
-            h5Qty.textContent = "Quantity: " + item.qty;
+            h5Qty.textContent = "Quantity: " + item.ItemQuantity;
 
             var h5Price = document.createElement('h5');
             h5Price.classList.add('price');
-            h5Price.textContent = "Price: " + item.price;
+            h5Price.textContent = "Price: " + item.ItemQuantity;
             
             details.appendChild(summery);
             details.appendChild(h5Qty);
@@ -98,32 +98,38 @@
         }
 
         function loadOrderDetails() {
-            const dataFromSv = {
-                orderDetails: [
-                    {itemName: 'KitKat', qty: 3, price:300 },
-                    {itemName: 'IceCream', qty: 4, price:130 },
-                    {itemName: 'Chocobar', qty: 2, price:40 }
-                ],
-                "orderId":"1",
-                "Receiver'sName":"Jayden London",
-                "Receiver'sEmail":"Jayden_London7891@typill.biz",
-                "orderdate":"5/3/9013",
-                "Total":"648300.18",
-                "status":"1"
-            }
 
-            dataFromSv.orderDetails.forEach(item => {
-                document.getElementById('items').appendChild(getItemNode(item));
-            });
+            const OrderId = new URLSearchParams(window.location.search).get('OrderId')
+            console.log(OrderId);
 
+             fetch('/api/orders/'+OrderId)
+            .then(Response=>Response.json())
+            .then((order)=>{
+                console.log(order._id)
 
-            document.getElementById('receiver-name').textContent = "Receiver's Name: " + dataFromSv["Receiver'sName"];
-            document.getElementById('receiver-email').textContent = "Receiver's Email: " + dataFromSv["Receiver'sEmail"];
-            document.getElementById('order-id').textContent = "OrderID: " + dataFromSv.orderId;
-            document.getElementById('order-date').textContent = "Order Date: " + dataFromSv.orderdate;
-            document.getElementById('order-total').textContent = "Total: " + dataFromSv.Total;
+                fetch(`/api/orders/orderDetails/${order._id}`)
+                .then(Response => Response.json())
+                .then((orderDetails)=>{
+                    orderDetails.forEach(item => {
+                        document.getElementById('items').appendChild(getItemNode(item));
+                    });
+                })
+                .catch(err=>console.log(err));
 
+                document.getElementById('receiver-name').textContent = "Receiver's Name: " + order.ReceiverName;
+                document.getElementById('receiver-email').textContent = "Receiver's Email: " + order.ReceiverAddress;
+                document.getElementById('order-id').textContent = "OrderID: " + order.OrderId;
+                document.getElementById('order-date').textContent = "Order Date: " + new Intl.DateTimeFormat('en-US',{
+                    year:'numeric',
+                    month:'long',
+                    day:'2-digit'
+                }).format(new Date(order.OrderDate));
+                document.getElementById('order-total').textContent = "Total: " + order.OrderTotal;
+
+            })
+            .catch(err=>console.log(err))
         }
+
         loadOrderDetails()
     </script>
 </body>
