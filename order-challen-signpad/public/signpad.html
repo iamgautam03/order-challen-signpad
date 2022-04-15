@@ -168,7 +168,7 @@
 
                 fetch(`/api/orders/orderDetails/${order._id}`)
                 .then(Response => Response.json())
-                .then((orderDetails)=>{
+                .then((orderDetails) => {
                     orderDetails.forEach(item => {
                         document.getElementById('items').appendChild(getItemNode(item));
                     });

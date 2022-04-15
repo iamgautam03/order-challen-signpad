@@ -2,24 +2,62 @@
 <html>
 <head>
 <title>Register</title>
-</head>
-<body>
-<center>
-    <h2>Register to SignOrder.com</h2>
-    <form onsubmit="return addUser()" action="login.html" method="post" name="registerform">
-        <label>Enter Business Name:</label><br/>
-        <input type="textbox" name="businessname"><br/>
-        <label>Enter Business Address :</label><br/>
-        <textarea name="businessaddress"></textarea><br/>
-        <label>Enter E-mail :</label><br/>
-        <input type="textbox" name="email"><br/>
-        <label>Enter password :</label><br/>
-        <input type="password" name="password"><br/>
-        <input type="submit" name="registerbtn" value="Register">
-        <a href="login.html"><input type="button" name="loginbtn" value="Login"></a>
-    </form>
-</center>
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+    body {
+        width: 100%;
+        height: 100%;
+    }
+    .container {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        grid-column-gap: 10px;
+        grid-row-gap: 10px;
+    }
 
+    .item1 { grid-area: 1 / 1 / 2 / 7; }
+    .item2 { grid-area: 2 / 2 / 3 / 6; }
+
+    .container {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        grid-column-gap: 10px;
+        grid-row-gap: 10px;
+    }
+
+    .item1 { grid-area: 1 / 1 / 2 / 13; }
+    .item2 { grid-area: 2 / 2 / 3 / 12; }
+
+
+</style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="item1">
+            <h2>Welcome To Order Challen SignPad</h2>
+        </div>
+        <div class="item2">
+            <form onsubmit="return addUser()" action="login.html" method="post" name="registerform">
+                <label>Enter Business Name:</label><br/>
+                <input type="textbox" name="businessname"><br/>
+                <label>Enter Business Address :</label><br/>
+                <textarea name="businessaddress"></textarea><br/>
+                <label>Enter E-mail :</label><br/>
+                <input type="textbox" name="email"><br/>
+                <label>Enter password :</label><br/>
+                <input type="password" name="password"><br/>
+                <input type="submit" name="registerbtn" value="Register">
+                <a href="login.html"><input type="button" name="loginbtn" value="Login"></a>
+            </form>
+        </div>
+    </div>
 <script>
     
     function addUser()
