@@ -263,7 +263,7 @@
             })
             .then(Response=>Response.json())
             .then((resposnse) => {
-                var link = `${window.location.origin}/${resposnse.link}`;
+                var link = `${window.location.origin}/api/orders/token/${resposnse.link}`;
                 document.getElementById('gen_link').value = link;
                 console.log(resposnse);
             }).catch((error) => {

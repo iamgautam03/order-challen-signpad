@@ -16,6 +16,22 @@ orderRouter
     })
     .catch(err=>next(err));
 })
+.post('/sign', async(req, res, next) => {
+    const order = await verifyLinkToken(decodeURIComponent(req.body.token));
+    order.SignStatus = true;
+    order.SignData = req.body.sign;
+    order.save().then((order) => {
+        console.log(req.body.sign);
+        console.log(order);
+        res.statusCode = 200;
+        res.setHeader('content-type','application/json');
+        res.send({
+            status: 1
+        });
+    }).catch((err) => {
+        next(err);
+    })
+})
 .post('/add', async(req, res, next) => {
     const orderData = {
         OrderId: req.body.orderId,
@@ -45,7 +61,7 @@ orderRouter
         res.setHeader('content-type','application/json');
         res.send({
             'status': 1,
-            'link': order.GeneratedLink
+            'link': encodeURIComponent(order.GeneratedLink)
         });
     }).catch((err) => {
         next(err);
@@ -67,14 +83,11 @@ orderRouter
     })
     .catch(err=>next(err));
 })
-.get('/token/:token',async (req,res,next)=>{
-    
-    // const token = await generateLinkToken("6246c492219d326d633df9ee","6246c492219d326d633df9ee");
-    // console.log(token);
+.get('/token/:token',async (req,res,next) => {
     const order = await verifyLinkToken(decodeURIComponent( req.params.token))
     console.log(order);
 
-    res.setHeader('content-type','application/json');
+res.setHeader('content-type','application/json');
     if(!order){
         res.statusCode=404;
         res.send({
