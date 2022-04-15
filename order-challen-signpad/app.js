@@ -11,6 +11,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var orderRouter = require('./routes/orders')
 var orderDetailRouter = require('./routes/orderDetails');
+var authRouter = require('./routes/authentication');
 var app = express();
 const connection = mongoose.connect(connectionString);
 
@@ -29,7 +30,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-
+app.use('/auth',authRouter);
 app.use('/api/orders',orderRouter);
 app.use('/api/orders/orderDetails',orderDetailRouter);
 
