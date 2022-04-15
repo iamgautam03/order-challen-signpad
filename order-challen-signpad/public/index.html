@@ -8,6 +8,15 @@
 <body>
   <h1>Express</h1>
   <p>Welcome to Express</p>
+<script>
+  const token = localStorage.getItem('token');
+  if(!token){
+    window.location.href= window.location.origin+"/login.html";
+  }
+  else{
+    window.location.href= window.location.origin+"/DashBoard.html";
+  }
+</script>
 </body>
 
 </html>

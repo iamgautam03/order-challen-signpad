@@ -28,6 +28,10 @@
             display: grid;
             grid-template-columns: 80% 20%;
         }
+        #companyGSTIN{
+            margin: 0%;
+            font-weight: bold;
+        }
         button {
             margin: 1%;
             height: 30px;
@@ -36,7 +40,8 @@
 </head>
 <body>
     <div class="div">
-        <h1 id="companyName">Order Challan</h1>    
+        <h1 id="companyName">Order Challan</h1>
+        <h4 id="companyGSTIN"></h4>
         <address id="companyAddress"></address>
     </div>
     <hr>
@@ -56,7 +61,7 @@
             </div>
         </div>
         <hr/>
-        <div class="grid">
+        <div class="grid" id="Signature">
             <h3>Signature: </h3>
             <br/>
             <img src="" id="sign_image" width="320" height="180" alt="not-yet-signed" style="border: 1px solid black;" />
@@ -65,6 +70,10 @@
         <a href="DashBoard.html"><button>Back to DashBoard</button></a>
     </div>
     <script>
+        const token = localStorage.getItem('token')
+        if(!token){
+            window.location.href= window.location.origin+"/login.html";
+        }
         var BusinessData={
             businessName:"Expert Logistics India Pvt. Ltd.",
             businessAddr:"Street:2/f, 2nd Floor, Naaz Cinema Bldg, Lamington Road, Lamington Road \nCity: Mumbai \nState/province/area: Maharashtra \nPhone number 02223861571 \nZip code 400004 \nCountry calling code +91 \nCountry India"
@@ -73,11 +82,31 @@
         status[0]= "sign pending";
         status[1]= "siged";
 
-        function setBusinessDetails(){
-            document.getElementById('companyName').innerHTML=BusinessData.businessName;
-            document.getElementById('companyAddress').innerHTML=BusinessData.businessAddr.replaceAll(
-                '\n',"<br>"
-            );
+        function setBusinessDetails() {
+            //     document.getElementById('companyName').innerHTML=BusinessData.businessName;
+            //     document.getElementById('companyAddress').innerHTML=BusinessData.businessAddr.replaceAll(
+            //         '\n',"<br>"
+            //     );
+            // }
+
+            fetch(`/users`, {
+                method: 'GET',
+                headers: {
+                    'content-type': "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            })
+                .then(Response => Response.json())
+                .then((response) => {
+                    console.log(response);
+                    document.getElementById('companyName').textContent = response.BusinessName;
+                    document.getElementById('companyGSTIN').textContent = "GSTIN: " + response.GSTIN;
+                    document.getElementById('companyAddress').innerHTML = response.BusinessAddress.replaceAll(
+                        '\n',"<br>"
+                    );;
+                }).catch((error) => {
+                console.error(error);
+            });
         }
         setBusinessDetails()
 
@@ -106,11 +135,19 @@
 
             const OrderId = new URLSearchParams(window.location.search).get('OrderId')
             console.log(OrderId);
-
-             fetch('/api/orders/'+OrderId)
+             fetch('/api/orders/'+OrderId,{
+                 method:"GET",
+                 headers:{
+                     Authorization:`Bearer ${token}`
+                 }
+             })
             .then(Response=>Response.json())
             .then((order)=>{
-                console.log(order._id)
+                console.log(order)
+                if(order.error){
+                    console.log("hello")
+                    window.location.href = window.location.origin + '/notfound.html';
+                }
 
                 fetch(`/api/orders/orderDetails/${order._id}`)
                 .then(Response => Response.json())
@@ -131,8 +168,12 @@
                 }).format(new Date(order.OrderDate));
                 document.getElementById('order-total').textContent = "Total: " + order.OrderTotal;
                 console.log(order);
+                if(order.SignData){
                 document.getElementById('sign_image').src = order.SignData;
-
+                    }
+                else{
+                    document.getElementById('Signature').style.display="none";
+                }
             })
             .catch(err=>console.log(err))
         }

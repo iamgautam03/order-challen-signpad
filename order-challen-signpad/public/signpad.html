@@ -65,7 +65,7 @@
 <body>
     <div class="order-details">
         <h1 id="companyName"></h1>
-        <h2 id="companyAddress"></h2>
+        <address id="companyAddress"></address>
         <h2 id="companyGSTIN"></h2>
         <h4 id="order-id"></h4>
         <h4 id="order-date"></h4>
@@ -153,15 +153,20 @@
             fetch('/api/orders/token/'+encodeURIComponent(token))
             .then(Response=>Response.json())
             .then((order)=>{
-                console.log(order._id);
-
+                console.log(order);
+                if(order.error){
+                    window.location.href = window.location.origin + '/notfound.html';
+                    return;
+                }
                 fetch(`/users/${order.CompanyId}`, {method: 'GET'})
                     .then(Response=>Response.json())
                     .then((response) => {
                         console.log(response);
-                        document.getElementById('companyName').textContent = response.businessName;
-                        document.getElementById('companyGSTIN').textContent = "GSTIN: " + response.businessGSTIN;
-                        document.getElementById('companyAddress').textContent = response.businessAddress;
+                        document.getElementById('companyName').textContent = response.BusinessName;
+                        document.getElementById('companyGSTIN').textContent = "GSTIN: " + response.GSTIN;
+                        document.getElementById('companyAddress').innerHTML = response.BusinessAddress.replaceAll(
+                            "\n","<br>"
+                        );
                     }).catch((error) => {
                         console.error(error);
                 });

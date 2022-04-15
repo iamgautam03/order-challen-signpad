@@ -51,9 +51,9 @@
             align-items: center;
             margin: 0% 3%;
         }
-        #addOrderButton {
+        #addOrderButton, #logoutButton {
             margin: 0% 2%;
-            width: 100%;
+            width: 96%;
             height: 32px;
             background-color: white;
             border: 1px solid black;
@@ -65,6 +65,15 @@
             justify-content: center;
             align-items: center;
         }
+        #companyGSTIN{
+            margin: 0%;
+            font-weight: bold;
+        }
+        .link-group {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
     </style>
 </head>
 <body>
@@ -72,7 +81,7 @@
         <div class="company">
             <h1 id="companyName"></h1>
             <address id="companyAddress"></address>
-            <h6 id="companyGstin"></h6>
+            <h4 id="companyGSTIN"></h4>
         </div>
     </div>
     <hr>
@@ -80,7 +89,10 @@
         <div>
             <h2>Order Challans</h2>
         </div>
-        <div>
+        <div class="link-group">
+            <a href="logout.html">
+                <button id="logoutButton">&nbsp;Logout&nbsp;</button>
+            </a>
             <a href="orderform.html">
                <button id="addOrderButton">&nbsp;Add Order Challan&nbsp;</button>
             </a>
@@ -107,6 +119,11 @@
     </div>
 
     <script>
+
+        const token = localStorage.getItem('token');
+        if(!token){
+            window.location.href= window.location.origin+"/login.html";
+        }
         var BusinessData={
             businessName:"Expert Logistics India Pvt. Ltd.",
             businessAddr:"Street:2/f, 2nd Floor, Naaz Cinema Bldg, Lamington Road, Lamington Road \nCity: Mumbai \nState/province/area: Maharashtra \nPhone number 02223861571 \nZip code 400004 \nCountry calling code +91 \nCountry India"
@@ -115,11 +132,31 @@
         status[0]= "sign pending";
         status[1]= "siged";
 
-        function setBusinessDetails(){
-            document.getElementById('companyName').innerHTML=BusinessData.businessName;
-            document.getElementById('companyAddress').innerHTML=BusinessData.businessAddr.replaceAll(
-                '\n',"<br>"
-            );
+        function setBusinessDetails() {
+            //     document.getElementById('companyName').innerHTML=BusinessData.businessName;
+            //     document.getElementById('companyAddress').innerHTML=BusinessData.businessAddr.replaceAll(
+            //         '\n',"<br>"
+            //     );
+            // }
+
+            fetch(`/users`, {
+                method: 'GET',
+                headers: {
+                    'content-type': "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            })
+                .then(Response => Response.json())
+                .then((response) => {
+                    console.log(response);
+                    document.getElementById('companyName').textContent = response.BusinessName;
+                    document.getElementById('companyGSTIN').textContent = "GSTIN: " + response.GSTIN;
+                    document.getElementById('companyAddress').innerHTML = response.BusinessAddress.replaceAll(
+                            '\n',"<br>"
+                        );
+                }).catch((error) => {
+                console.error(error);
+            });
         }
         setBusinessDetails()
 
@@ -200,7 +237,7 @@
                 }) 
             })
             .catch(err=>{
-                window.location.href = window.location.origin + '/login.html';
+                    window.location.href = window.location.origin + '/login.html';
                 console.log(data)}
             )
         }

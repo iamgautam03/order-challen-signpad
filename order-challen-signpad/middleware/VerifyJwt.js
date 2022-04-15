@@ -5,10 +5,7 @@ module.exports = (req,res,next)=>{
 
     const header = req.headers.authorization.split(' ')[1];
     if(header==null){
-        res.setHeader("content-type",'application/json');
-        res.status(401)
-            .send({error:"User not found"});
-        next(err)
+        res.redirect('/login.html')
     }
     jsonWebToken.verify(header,config.Secret,(error,result)=>{
         if(error){

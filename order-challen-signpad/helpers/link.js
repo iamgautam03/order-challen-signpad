@@ -12,7 +12,7 @@ module.exports.verifyLinkToken = async (token) => {
     const bytes = AES.decrypt(token, SECRET);
     const tokenFor = bytes.toString(ENC);
     const [OrderId, CompanyId] = tokenFor.split('+');
-
+    console.log(OrderId,CompanyId);
     return await Order.findOne({
         CompanyId,
         OrderId,

@@ -9,8 +9,8 @@ orderRouter.use(express.json());
 orderRouter.use(express.urlencoded({extended:false}));
 
 orderRouter
-.get('/',(req,res,next) => {
-    Order.find({})
+.get('/',VerifyJwt,(req,res,next) => {
+    Order.find({CompanyId: req.user._id})
     .then((orders)=>{
         res.statusCode=200;
         res.setHeader('content-type','application/json');
@@ -71,7 +71,7 @@ orderRouter
         next(err);
     });
 })
-.get("/:OrderId",(req,res,next) => {
+.get("/:OrderId",VerifyJwt,(req,res,next) => {
     Order.findOne({"OrderId":req.params.OrderId})
     .then((orders)=>{
         if(!orders) {
@@ -101,8 +101,10 @@ orderRouter
             "error":"Data not found"
         });
     }
-    res.statusCode=200;    
-    res.send(order);
+    else {
+        res.statusCode = 200;
+        res.send(order);
+    }
     // res.statusCode=200;
     // res.setHeader('content-type','application/json');
     // res.send(encodeURIComponent( token));
