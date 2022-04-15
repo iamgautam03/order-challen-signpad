@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Logout</title>
+</head>
+<body>
+<script>
+
+    if(localStorage.getItem('token')){
+        localStorage.removeItem('token')
+    }
+    window.location.href = window.location.origin + '/login.html';
+
+</script>
+</body>
+</html>

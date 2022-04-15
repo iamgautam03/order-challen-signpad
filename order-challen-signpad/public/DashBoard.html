@@ -279,12 +279,20 @@
 
         // fillUpOrderChallanTable()
         function updateOrderChallanTable(){
-            fetch('/api/orders')
+            const token = localStorage.getItem("token")
+            console.log(token)
+            fetch('/api/orders',{
+                method:"GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            })
             .then(Response=>Response.json())
             .then((orders)=>{
                 console.log(orders);
                 var tbody = document.getElementById("tableBody");
-                const orderOfdisplay=["OrderId","ReceiverName","ReceiverAddress","OrderDate","OrderTotal","SignStatus"];
+                const orderOfdisplay=["OrderId","ReceiverName","ReceiverEmail","OrderDate","OrderTotal","SignStatus"];
 
 
                 orders.forEach((order)=>{
@@ -308,16 +316,6 @@
                         td.innerHTML=order[orderOfdisplay[i]];
                         tr.appendChild(td);
                     }
-                    // for (const [key, value] of Object.entries(order)) {
-                    //     var td = document.createElement('td');
-                    //     if(key === "status"){
-                    //         td.innerHTML=status[value];
-                    //         tr.appendChild(td);
-                    //         continue;
-                    //     }
-                    //     td.innerHTML=value;
-                    //     tr.appendChild(td);
-                    // }
                     var td = document.createElement('td');
 
                     var button =  document.createElement('a');
@@ -328,7 +326,10 @@
                     tbody.appendChild(tr);  
                 }) 
             })
-            .catch(err=>console.log(data))
+            .catch(err=>{
+                window.location.href = window.location.origin + '/login.html';
+                console.log(data)}
+            )
         }
         updateOrderChallanTable()
 

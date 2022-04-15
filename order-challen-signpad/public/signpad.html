@@ -94,6 +94,23 @@
         </ul>
     </div>
     <script>
+
+        function setBusinessDetails(id) {
+            fetch(`/users/${id}`, {method: 'GET',
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            })
+                .then(Response=>Response.json())
+                .then((response) => {
+                    document.querySelector('input[name="bussiness-name"]').value = response.BusinessName;
+                    document.querySelector('textarea[name="bussiness-addr"]').value = response.BusinessAddress;
+                    document.querySelector('input[name="bussiness-gstin"]').value = response.GSTIN;
+                }).catch((error) => {
+                console.error(error);
+            });
+        }
+        setBusinessDetails();
         const canvas = document.querySelector("#signpad");
         const signPad = new SignaturePad(canvas);
 
@@ -128,10 +145,10 @@
         }
 
         function loadOrderDetails() {
-                const dataFromSv = {
-                businessName: 'Expert Logistics India Pvt. Ltd.',
-                businessAddr: 'Street:2/f, 2nd Floor, Naaz Cinema Bldg, Lamington Road, Lamington Road \nCity: Mumbai \nState/province/area: Maharashtra \nPhone number 02223861571 \nZip code 400004 \nCountry calling code +91 \nCountry India',
-             }
+            const dataFromSv = {
+            businessName: 'Expert Logistics India Pvt. Ltd.',
+            businessAddr: 'Street:2/f, 2nd Floor, Naaz Cinema Bldg, Lamington Road, Lamington Road \nCity: Mumbai \nState/province/area: Maharashtra \nPhone number 02223861571 \nZip code 400004 \nCountry calling code +91 \nCountry India',
+         }
             document.getElementById('companyName').textContent = "From: " + dataFromSv.businessName ;
             document.getElementById("companyAddress").textContent=dataFromSv.businessAddr;
 
@@ -151,7 +168,7 @@
                     });
                 })
                 .catch(err=>console.log(err));
-                document.getElementById('receiver-details').textContent = "To: " + order.ReceiverName + " Email:" +  order.ReceiverAddress;
+                document.getElementById('receiver-details').textContent = "To: " + order.ReceiverName + " Email:" +  order.ReceiverEmail;
 
                 document.getElementById('order-id').textContent = "OrderID: " + order.OrderId;
                 document.getElementById('order-date').textContent = "Order Date: " + new Intl.DateTimeFormat('en-US',{

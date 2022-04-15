@@ -1,7 +1,11 @@
 const express = require('express')
 const User = require('../models/User')
+const {Password} = require("../config");
+const bcrypt = require('bcrypt');
 const userRouter = express.Router();
-
+const config = require('../config')
+const jsonWebToken = require('jsonwebtoken');
+const encryptPassword =require('../middleware/EncryptPassword')
 userRouter.use(express.json());
 userRouter.use(express.urlencoded({extended:false}));
 
@@ -16,33 +20,63 @@ json :
     "gst":"tf"
 }
 */
-userRouter.route('/add-user').post((req,res) => {
+userRouter
+    .post('/register',async (req,res) => {
     const Email = req.body.email;
-    const Password = req.body.password;
+    const Password = await encryptPassword(req.body.password);
     const BusinessName =req.body.businessName;
     const BusinessAddress = req.body.businessAddress;
-    const GSTIN = req.body.gst;
-
-    const newUser = new User({Email,Password,BusinessName,BusinessAddress,GSTIN});
-    newUser.save()
-        .then(() => res.json("User added"))
-        .catch(err => res.status(400).json("error:"+err));
+    const GSTIN = req.body.gstno;
+        User.create({Email,Password,BusinessName,BusinessAddress,GSTIN})
+        .then((user) => {
+            if(!user){
+                res.status(400).json({
+                    status:400,
+                    error:"User not created"
+                })
+            }
+            res.status(200).json({
+            status:200,
+            user:user
+        })}
+        )
+        .catch(err => res.status(400).json({
+            status:400,
+            err:err
+        }));
 
 });
 // url example : http://localhost:3000/auth/yashskukreja@gmail.com
-userRouter.get('/:email',(req,res,next)=>{
-    console.log(req.find);
-    
-    User.find({"Email":req.params.email})
-    .then((User)=>{
-        res.statusCode=200;
-        res.setHeader('content-type','application/json');
-        res.send(User);
-    })
-    .catch(err=>{
-        next(err);
-    })
-})
+userRouter
+    .post("/login",(req,res,next)=>{
+        User.findOne({
+            Email:req.body.Email
+        })
+            .then(user=>{
+                res.setHeader("content-type",'application/json')
+                if(!user) {
+                    res.status(400)
+                        .send({status:401,error:"Your account not found"});
+                }
+                bcrypt.compare(req.body.Password,user.Password, (error,data)=>{
+                  if(error){
+                      res.status(400)
+                          .send({status:400,error});
+                  }
+                  if(data==true) {
+                      const token = jsonWebToken.sign({user: user}, config.Secret);
+                      res.status(200)
+                          .send({token});
+                  }
+                  else {
+                      res.status(400)
+                          .send({status:401,error:"password not matched"})
+                  }
+                })
 
+
+            })
+            .catch(err=>next(err))
+    })
 
 module.exports = userRouter;

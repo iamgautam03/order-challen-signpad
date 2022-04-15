@@ -11,12 +11,12 @@ module.exports.generateLinkToken =  (orderId, companyId) => {
 module.exports.verifyLinkToken = async (token) => {
     const bytes = AES.decrypt(token, SECRET);
     const tokenFor = bytes.toString(ENC);
-    const [orderId, companyId] = tokenFor.split('+');
-
+    const [OrderId, CompanyId] = tokenFor.split('+');
     return await Order.findOne({
-        companyId,
-        orderId
+        OrderId,
+        CompanyId
     }).then((order) => {
+        console.log("d"+order);
         return order
     }).catch((err) => {
         return null;

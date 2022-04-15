@@ -170,14 +170,19 @@
         </fieldset>
     </form>
     <script>
+        const token = localStorage.getItem("token")
         function setBusinessDetails() {
-            fetch("/users/6245dec4d74b3dac7f8aa034", {method: 'GET'})
+            fetch("/users", {method: 'GET',
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            })
                 .then(Response=>Response.json())
                 .then((response) => {
-                    console.log(response);
-                    document.querySelector('input[name="bussiness-name"]').value = response.businessName;
-                    document.querySelector('textarea[name="bussiness-addr"]').value = response.businessAddress;
-                    document.querySelector('input[name="bussiness-gstin"]').value = response.businessGSTIN;
+                    document.querySelector('input[name="bussiness-name"]').value = response.BusinessName;
+                    document.querySelector('textarea[name="bussiness-addr"]').value = response.BusinessAddress;
+                    document.querySelector('input[name="bussiness-gstin"]').value = response.GSTIN;
                 }).catch((error) => {
                     console.error(error);
             });
@@ -251,19 +256,19 @@
                 receiverName: document.querySelector('input[name="receiver-name"]').value,
                 receiverEmail: document.querySelector('input[name="receiver-email"]').value,
                 total: document.querySelector('input[name="order-total"]').value,
-                companyId: '6245dec4d74b3dac7f8aa034'
             };
 
             fetch("/api/orders/add", {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
                 },
                 body: JSON.stringify(dataToSend)
             })
             .then(Response=>Response.json())
             .then((resposnse) => {
-                var link = `${window.location.origin}/${resposnse.link}`;
+                var link = `${window.location.origin}/signpad.html?token=${resposnse.link}`;
                 document.getElementById('gen_link').value = link;
                 console.log(resposnse);
             }).catch((error) => {

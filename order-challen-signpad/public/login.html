@@ -6,7 +6,7 @@
 <body>
 <center>
     <h2>Login to SignOrder.com</h2>
-    <form onsubmit="return authenticate()" action="DashBoard.html" method="post" name="loginform">
+    <form onsubmit="return authenticate()" method="post" name="loginform">
         <label>Enter E-mail : </label><br/>
         <input type="textbox" name="email"><br/>
         <label>Enter password : </label><br/>
@@ -17,16 +17,43 @@
 </center>
 
 <script>
-    
+
+    function checkPreviousSession(){
+        if(localStorage.getItem('token')){
+            window.location.href = window.location.origin + '/DashBoard.html';
+        }
+    }
+
+    checkPreviousSession();
     function authenticate()
     {
         var form = document.forms["loginform"];
         var email = form["email"].value;
         var password = form["password"].value;
-        if(email=="xyz@gmail.com" && password=="12345678")
+        if(email!="" && password!="")
         {
-            alert("Login Successful");
-            return true;
+            fetch('/auth/login',{
+                method:"POST",
+                headers:{
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    Email:email,
+                    Password:password
+                })
+            })
+                .then(response=>response.json())
+                .then((response)=>{
+                    console.log(response);
+                    if(response.error && response.status==401){
+                        alert(response.error)
+                        return false;
+                    }
+                    localStorage.setItem("token",response.token);
+                    alert("Login Successful");
+                    window.location.href = window.location.origin + '/DashBoard.html';
+                })
+            return false;
         }
         else
         {

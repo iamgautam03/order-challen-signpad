@@ -26,8 +26,7 @@ const UserSchema = new Schema({
         required: true
     },
     GSTIN: {
-        type: String,
-        required: true
+        type: String
     },
 }, { timestamps: true });
 

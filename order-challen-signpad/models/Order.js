@@ -24,8 +24,7 @@ const OrderSChema = new Schema({
         required:true
     },
     ReceiverAddress:{
-        type:String,
-        // required:true
+        type:String
     },
     ReceiverGSTIN:{
         type:String
