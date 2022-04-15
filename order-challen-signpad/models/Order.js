@@ -42,7 +42,7 @@ const OrderSChema = new Schema({
         default:false
     },
     SignData:{
-        type:Buffer
+        type:String
     },
     SignDataContentType:{
         type:String

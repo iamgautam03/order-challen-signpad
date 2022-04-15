@@ -13,18 +13,18 @@
             margin: 1%;
             padding: 1%;
         }
-        div.order-details{
+        div.order-details {
             border: 1px solid black;
             border-radius: 5px;
         }
         h3 {
             margin: 1%;
         }
-        h4 ,h5{
+        h4 ,h5 {
             margin: 1%;
             font-weight: 500;
         }
-        .grid{
+        .grid {
             display: grid;
             grid-template-columns: 80% 20%;
         }
@@ -50,11 +50,15 @@
         </div>
         <hr/>
         <div class="grid">
-                
             <h4>Order Details:</h4>
             <h4 id="order-total"></h4>
             <div id="items">
             </div>
+        </div>
+        <hr/>
+        <div class="grid">
+            <h3>Signature: </h3>
+            <img src="" id="sign_image" width="320" height="180" alt="not-yet-signed" style="border: 1px solid black;" />
         </div>
         <hr/>
         <a href="DashBoard.html"><button>Back to DashBoard</button></a>
@@ -125,6 +129,8 @@
                     day:'2-digit'
                 }).format(new Date(order.OrderDate));
                 document.getElementById('order-total').textContent = "Total: " + order.OrderTotal;
+                console.log(order);
+                document.getElementById('sign_image').src = order.SignData;
 
             })
             .catch(err=>console.log(err))

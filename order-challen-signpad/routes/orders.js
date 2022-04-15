@@ -9,14 +9,30 @@ orderRouter.use(express.json());
 orderRouter.use(express.urlencoded({extended:false}));
 
 orderRouter
-.get('/',VerifyJwt,(req,res,next) => {
-    Order.find({CompanyId: req.user._id})
+.get('/',(req,res,next) => {
+    Order.find({})
     .then((orders)=>{
         res.statusCode=200;
         res.setHeader('content-type','application/json');
         res.send(orders);
     })
     .catch(err=>next(err));
+})
+.post('/sign', async(req, res, next) => {
+    const order = await verifyLinkToken(decodeURIComponent(req.body.token));
+    order.SignStatus = true;
+    order.SignData = req.body.sign;
+    order.save().then((order) => {
+        console.log(req.body.sign);
+        console.log(order);
+        res.statusCode = 200;
+        res.setHeader('content-type','application/json');
+        res.send({
+            status: 1
+        });
+    }).catch((err) => {
+        next(err);
+    })
 })
 .post('/add',VerifyJwt, async(req, res, next) => {
     const orderData = {
@@ -49,7 +65,7 @@ orderRouter
         res.setHeader('content-type','application/json');
         res.send({
             'status': 1,
-            'link': order.GeneratedLink
+            'link': encodeURIComponent(order.GeneratedLink)
         });
     }).catch((err) => {
         next(err);
