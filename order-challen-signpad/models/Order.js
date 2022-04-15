@@ -19,9 +19,13 @@ const OrderSChema = new Schema({
         type:String,
         required:true
     },
-    ReceiverAddress:{
+    ReceiverEmail:{
         type:String,
         required:true
+    },
+    ReceiverAddress:{
+        type:String,
+        // required:true
     },
     ReceiverGSTIN:{
         type:String

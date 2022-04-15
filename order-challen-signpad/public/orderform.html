@@ -66,6 +66,14 @@
                 </div>
                 <div class="table-row">
                     <div class="table-col">
+                        <label for="bussiness-gstin">Business GSTIN: </label>
+                    </div>
+                    <div class="table-col">
+                        <input type="text" name="bussiness-gstin" readonly disabled/>
+                    </div>
+                </div>
+                <div class="table-row">
+                    <div class="table-col">
                         <label for="bussiness-addr">Business Address: </label>
                     </div>
                     <div class="table-col">
@@ -163,11 +171,16 @@
     </form>
     <script>
         function setBusinessDetails() {
-            const businessName = "Expert Logistics India Pvt. Ltd.";
-            const businessAddr = "Street:2/f, 2nd Floor, Naaz Cinema Bldg, Lamington Road, Lamington Road \nCity: Mumbai \nState/province/area: Maharashtra \nPhone number 02223861571 \nZip code 400004 \nCountry calling code +91 \nCountry India";
-            // above data will come from backend
-            document.querySelector('input[name="bussiness-name"]').value = businessName;
-            document.querySelector('textarea[name="bussiness-addr"]').value = businessAddr;
+            fetch("/users/6245dec4d74b3dac7f8aa034", {method: 'GET'})
+                .then(Response=>Response.json())
+                .then((response) => {
+                    console.log(response);
+                    document.querySelector('input[name="bussiness-name"]').value = response.businessName;
+                    document.querySelector('textarea[name="bussiness-addr"]').value = response.businessAddress;
+                    document.querySelector('input[name="bussiness-gstin"]').value = response.businessGSTIN;
+                }).catch((error) => {
+                    console.error(error);
+            });
         }
         setBusinessDetails();
 
@@ -216,9 +229,6 @@
         }
 
         function generateLink() {
-            var link = `orderchallansign.com/?t=${window.crypto.randomUUID()}`;
-            document.getElementById('gen_link').value = link;
-
             var itemNames = document.querySelectorAll('input[name="item-name"]');
             var itemPrices = document.querySelectorAll('input[name="item-price"]');
             var itemQtys = document.querySelectorAll('input[name="item-qty"]');
@@ -228,9 +238,9 @@
             orders = new Array(len);
             for (var i=0; i<len; i++) {
                 orders[i] = {
-                    itemName: itemNames[i].value,
-                    qty: itemQtys[i].value,
-                    price: itemPrices[i].value
+                    ItemName: itemNames[i].value,
+                    ItemQuantity: itemQtys[i].value,
+                    ItemPrice: itemPrices[i].value
                 };
             }
 
@@ -241,9 +251,24 @@
                 receiverName: document.querySelector('input[name="receiver-name"]').value,
                 receiverEmail: document.querySelector('input[name="receiver-email"]').value,
                 total: document.querySelector('input[name="order-total"]').value,
+                companyId: '6245dec4d74b3dac7f8aa034'
             };
 
-            console.log(dataToSend);
+            fetch("/api/orders/add", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dataToSend)
+            })
+            .then(Response=>Response.json())
+            .then((resposnse) => {
+                var link = `${window.location.origin}/${resposnse.link}`;
+                document.getElementById('gen_link').value = link;
+                console.log(resposnse);
+            }).catch((error) => {
+                console.error(error);
+            });
         }
 
         function copyToClipboard() {

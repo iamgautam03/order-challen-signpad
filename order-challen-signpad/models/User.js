@@ -2,12 +2,12 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const UserSchema = new Schema({
-    CompanyId : {
-        type: mongoose.Types.ObjectId,
-        required: true,
-        unique: true,
-        index: true,
-    },
+    // CompanyId : {
+    //     type: mongoose.Types.ObjectId,
+    //     required: true,
+    //     unique: true,
+    //     index: true,
+    // },
     Email: {
         type: String,
         required: true,
