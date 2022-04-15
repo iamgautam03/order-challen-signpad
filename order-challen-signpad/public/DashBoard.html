@@ -8,67 +8,103 @@
     <style>
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
-        table{
+        table {
             width: 100%;
         }
         th, td {
             border-bottom: 1px solid black;
         }
-        #tableBody{
+        #tableBody {
             text-align: center;
         }
         button {
             margin: 2%;
-            height: 30px;
+            height: 40px;
         }
-        h2{
+        h2 {
             margin-left: 2%;
         }
         .div {
             margin: 1%;
             padding: 1%;
         }
-        .grid{
+        .grid {
             display: grid;
             grid-template-columns: 85% 15%;
         }
-        #addOrderButton{
-            align-self: center;
+        .container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .company {
+            width: 100%;
+            margin: 2%;
+        }
+        .before-table {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0% 3%;
+        }
+        #addOrderButton {
+            margin: 0% 2%;
+            width: 100%;
+            height: 32px;
+            background-color: white;
+            border: 1px solid black;
+            border-radius: 5px;
+        }
+        .order-table {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
     </style>
 </head>
 <body>
-    <div class="div">
-    <h1 id="companyName">Order Challan</h1>    
-    <address id="companyAddress"></address>
+    <div class="container">
+        <div class="company">
+            <h1 id="companyName"></h1>
+            <address id="companyAddress"></address>
+            <h6 id="companyGstin"></h6>
+        </div>
     </div>
     <hr>
-    <div class="grid">
+    <div class="before-table">
         <div>
-        <h2>Order Challans</h2>
+            <h2>Order Challans</h2>
         </div>
-        <div id="addOrderButton">
-           <a href="orderform.html"> <button>add Order Challan</button></a>
+        <div>
+            <a href="orderform.html">
+               <button id="addOrderButton">&nbsp;Add Order Challan&nbsp;</button>
+            </a>
         </div>
     </div>
     <hr>
-    <table>
-        <thead>
-            <tr>
-                <th>order Id</th>
-                <th>Receiver's Name</th>
-                <th>Receiver's Email</th>
-                <th>order date</th>
-                <th>Total</th>
-                <th>status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody id="tableBody">
-
-        </tbody>
-    </table>
+    <div class="order-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>order Id</th>
+                    <th>Receiver's Name</th>
+                    <th>Receiver's Email</th>
+                    <th>order date</th>
+                    <th>Total</th>
+                    <th>status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+    
+            </tbody>
+        </table>
+    </div>
 
     <script>
         var BusinessData={
@@ -79,168 +115,6 @@
         status[0]= "sign pending";
         status[1]= "siged";
 
-        var orderChallan=[
-            { 
-"orderId":"1",
-"Receiver'sName":"Jayden London",
-"Receiver'sEmail":"Jayden_London7891@typill.biz",
-"orderdate":"5/3/9013",
-"Total":"648300.18",
-"status":"1"
-},
-{ 
-"orderId":"2",
-"Receiver'sName":"Madelyn Neal",
-"Receiver'sEmail":"Madelyn_Neal8605@twace.org",
-"orderdate":"9/25/1597",
-"Total":"590265.97",
-"status":"1"
-},
-{ 
-"orderId":"3",
-"Receiver'sName":"George Potts",
-"Receiver'sEmail":"George_Potts1256@nimogy.biz",
-"orderdate":"4/13/3848",
-"Total":"48893.42",
-"status":"0"
-},
-{ 
-"orderId":"4",
-"Receiver'sName":"Aiden Booth",
-"Receiver'sEmail":"Aiden_Booth7267@nickia.com",
-"orderdate":"2/2/7739",
-"Total":"803752.32",
-"status":"1"
-},
-{ 
-"orderId":"5",
-"Receiver'sName":"Miriam Huggins",
-"Receiver'sEmail":"Miriam_Huggins1537@mafthy.com",
-"orderdate":"8/24/0303",
-"Total":"528307.69",
-"status":"0"
-},
-{ 
-"orderId":"6",
-"Receiver'sName":"Katelyn Owen",
-"Receiver'sEmail":"Katelyn_Owen8640@twace.org",
-"orderdate":"5/8/1748",
-"Total":"587264.20",
-"status":"1"
-},
-{ 
-"orderId":"7",
-"Receiver'sName":"Bryon Fox",
-"Receiver'sEmail":"Bryon_Fox2523@supunk.biz",
-"orderdate":"9/29/9929",
-"Total":"849313.25",
-"status":"0"
-},
-{ 
-"orderId":"8",
-"Receiver'sName":"Summer Fulton",
-"Receiver'sEmail":"Summer_Fulton2723@yahoo.com",
-"orderdate":"12/20/7675",
-"Total":"971863.63",
-"status":"0"
-},
-{ 
-"orderId":"9",
-"Receiver'sName":"Penny Hunt",
-"Receiver'sEmail":"Penny_Hunt6573@twipet.com",
-"orderdate":"4/4/3389",
-"Total":"472330.21",
-"status":"0"
-},
-{ 
-"orderId":"10",
-"Receiver'sName":"Joseph Wright",
-"Receiver'sEmail":"Joseph_Wright3160@qater.org",
-"orderdate":"1/14/3907",
-"Total":"946623.59",
-"status":"1"
-},
-{ 
-"orderId":"11",
-"Receiver'sName":"Sebastian Shea",
-"Receiver'sEmail":"Sebastian_Shea3865@zorer.org",
-"orderdate":"1/10/0605",
-"Total":"177014.48",
-"status":"0"
-},
-{ 
-"orderId":"12",
-"Receiver'sName":"Matt Bennett",
-"Receiver'sEmail":"Matt_Bennett9043@famism.biz",
-"orderdate":"5/3/9577",
-"Total":"153673.81",
-"status":"0"
-},
-{ 
-"orderId":"13",
-"Receiver'sName":"Alma Cattell",
-"Receiver'sEmail":"Alma_Cattell4145@infotech44.tech",
-"orderdate":"3/25/3900",
-"Total":"89308.89",
-"status":"0"
-},
-{ 
-"orderId":"14",
-"Receiver'sName":"Tyson Hammond",
-"Receiver'sEmail":"Tyson_Hammond3672@iatim.tech",
-"orderdate":"4/11/2448",
-"Total":"239882.17",
-"status":"1"
-},
-{ 
-"orderId":"15",
-"Receiver'sName":"Margot Goldsmith",
-"Receiver'sEmail":"Margot_Goldsmith687@bretoux.com",
-"orderdate":"8/7/7807",
-"Total":"686144.89",
-"status":"0"
-},
-{ 
-"orderId":"16",
-"Receiver'sName":"Tyson Chester",
-"Receiver'sEmail":"Tyson_Chester3060@naiker.biz",
-"orderdate":"8/26/6562",
-"Total":"979373.52",
-"status":"1"
-},
-{ 
-"orderId":"17",
-"Receiver'sName":"Jessica Lowe",
-"Receiver'sEmail":"Jessica_Lowe9028@gompie.com",
-"orderdate":"9/26/5147",
-"Total":"470572.04",
-"status":"1"
-},
-{ 
-"orderId":"18",
-"Receiver'sName":"Daron King",
-"Receiver'sEmail":"Daron_King9703@kideod.biz",
-"orderdate":"3/26/2762",
-"Total":"957414.60",
-"status":"0"
-},
-{ 
-"orderId":"19",
-"Receiver'sName":"Brad Owen",
-"Receiver'sEmail":"Brad_Owen6223@ovock.tech",
-"orderdate":"2/12/1084",
-"Total":"587919.54",
-"status":"0"
-},
-{ 
-"orderId":"20",
-"Receiver'sName":"Fred Quinton",
-"Receiver'sEmail":"Fred_Quinton9225@nimogy.biz",
-"orderdate":"3/5/6316",
-"Total":"143577.12",
-"status":"0"
-}   
-]
         function setBusinessDetails(){
             document.getElementById('companyName').innerHTML=BusinessData.businessName;
             document.getElementById('companyAddress').innerHTML=BusinessData.businessAddr.replaceAll(
@@ -268,7 +142,7 @@
                 var td = document.createElement('td');
 
                 var button =  document.createElement('a');
-                button.innerHTML="<button>view Order</button>";
+                button.innerHTML="<button>View Order</button>";
                 button.href="viewOrder.html";
                 td.appendChild(button)
                 tr.appendChild(td);
@@ -277,7 +151,6 @@
 
         }
 
-        // fillUpOrderChallanTable()
         function updateOrderChallanTable(){
             const token = localStorage.getItem("token")
             console.log(token)
