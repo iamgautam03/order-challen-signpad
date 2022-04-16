@@ -148,7 +148,7 @@
         //Add the User
         
         if( bname!="" && baddress != "" && email!="" && password!="" ){
-
+            console.log(bname+" "+baddress+" "+email+" "+password+" "+gstno)
             fetch('/auth/register',{
                 method:"POST",
                 headers:{

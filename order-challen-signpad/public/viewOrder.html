@@ -159,7 +159,7 @@
                 .catch(err=>console.log(err));
 
                 document.getElementById('receiver-name').textContent = "Receiver's Name: " + order.ReceiverName;
-                document.getElementById('receiver-email').textContent = "Receiver's Email: " + order.ReceiverAddress;
+                document.getElementById('receiver-email').textContent = "Receiver's Email: " + order.ReceiverEmail;
                 document.getElementById('order-id').textContent = "OrderID: " + order.OrderId;
                 document.getElementById('order-date').textContent = "Order Date: " + new Intl.DateTimeFormat('en-US',{
                     year:'numeric',

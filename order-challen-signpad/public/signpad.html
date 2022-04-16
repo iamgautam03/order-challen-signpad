@@ -179,7 +179,7 @@
                     });
                 })
                 .catch(err=>console.log(err));
-                document.getElementById('receiver-details').textContent = "To: " + order.ReceiverName + "Email:" +  order.ReceiverEmail;
+                document.getElementById('receiver-details').innerHTML = "To: " + order.ReceiverName + "<br> Email:" +  order.ReceiverEmail;
 
                 document.getElementById('order-id').textContent = "OrderID: " + order.OrderId;
                 document.getElementById('order-date').textContent = "Order Date: " + new Intl.DateTimeFormat('en-US',{

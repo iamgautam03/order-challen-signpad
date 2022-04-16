@@ -22,13 +22,16 @@ json :
 */
 userRouter
     .post('/register',async (req,res) => {
+        console.log(req.body);
     const Email = req.body.email;
     const Password = await encryptPassword(req.body.password);
     const BusinessName =req.body.businessName;
     const BusinessAddress = req.body.businessAddress;
     const GSTIN = req.body.gstno;
+    console.log(req.body);
         User.create({Email,Password,BusinessName,BusinessAddress,GSTIN})
         .then((user) => {
+            console.log("inside user register")
             if(!user){
                 res.status(400).json({
                     status:400,
