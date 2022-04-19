@@ -13,7 +13,7 @@ const MailConfig = nodeMailer.createTransport({
 
 var MailOption= {
     from:config.Email,
-    subject:"Order Challah sign pad link",
+    subject:"Order Challan sign pad link",
     disableUrlAccess:false
 }
 
@@ -21,9 +21,8 @@ const send = (email,token)=>{
     MailConfig.sendMail({
         ...MailOption,
         to:email,
-        html:"Order Challah sign pad link <a href='http://localhost:3000/signpad.html?token=" + token + "'>Click Here</a>"
+        html:"Order Challan sign pad link <a href='http://localhost:3000/signpad.html?token=" + token + "'>Click Here</a>"
     },function (error, info) {
-
         if (error) {
             console.warn(error);
         }

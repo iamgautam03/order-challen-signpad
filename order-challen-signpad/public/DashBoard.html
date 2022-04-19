@@ -113,11 +113,9 @@
                 </tr>
             </thead>
             <tbody id="tableBody">
-    
             </tbody>
         </table>
     </div>
-
     <script>
 
         const token = localStorage.getItem('token');
@@ -138,7 +136,6 @@
             //         '\n',"<br>"
             //     );
             // }
-
             fetch(`/users`, {
                 method: 'GET',
                 headers: {
@@ -160,33 +157,32 @@
         }
         setBusinessDetails()
 
-        function fillUpOrderChallanTable(){
-            var tbody = document.getElementById("tableBody");
-          
-            for(var i=0;i<orderChallan.length;i++){
-                var tr = document.createElement('tr');
-
-                for (const [key, value] of Object.entries(orderChallan[i])) {
-                    var td = document.createElement('td');
-                    if(key === "status"){
-                        td.innerHTML=status[value];
-                        tr.appendChild(td);
-                        continue;
-                    }
-                    td.innerHTML=value;
-                    tr.appendChild(td);
-                }
-                var td = document.createElement('td');
-
-                var button =  document.createElement('a');
-                button.innerHTML="<button>View Order</button>";
-                button.href="viewOrder.html";
-                td.appendChild(button)
-                tr.appendChild(td);
-                tbody.appendChild(tr);
-            }   
-
-        }
+        // function fillUpOrderChallanTable(){
+        //     var tbody = document.getElementById("tableBody");
+        //
+        //     for(var i=0;i<orderChallan.length;i++){
+        //         var tr = document.createElement('tr');
+        //
+        //         for (const [key, value] of Object.entries(orderChallan[i])) {
+        //             var td = document.createElement('td');
+        //             if(key === "status"){
+        //                 td.innerHTML=status[value];
+        //                 tr.appendChild(td);
+        //                 continue;
+        //             }
+        //             td.innerHTML=value;
+        //             tr.appendChild(td);
+        //         }
+        //         var td = document.createElement('td');
+        //
+        //         var button =  document.createElement('a');
+        //         button.innerHTML="<button>View Order</button>";
+        //         button.href="viewOrder.html";
+        //         td.appendChild(button)
+        //         tr.appendChild(td);
+        //         tbody.appendChild(tr);
+        //     }
+        // }
 
         function updateOrderChallanTable(){
             const token = localStorage.getItem("token")
@@ -203,8 +199,6 @@
                 console.log(orders);
                 var tbody = document.getElementById("tableBody");
                 const orderOfdisplay=["OrderId","ReceiverName","ReceiverEmail","OrderDate","OrderTotal","SignStatus"];
-
-
                 orders.forEach((order)=>{
                     var tr = document.createElement('tr');
                     for(var i=0;i<orderOfdisplay.length;i++){
@@ -234,15 +228,14 @@
                     td.appendChild(button)
                     tr.appendChild(td);
                     tbody.appendChild(tr);  
-                }) 
+                })
             })
             .catch(err=>{
-                    window.location.href = window.location.origin + '/login.html';
+                window.location.href = window.location.origin + '/login.html';
                 console.log(data)}
             )
         }
         updateOrderChallanTable()
-
     </script>
 </body>
 </html>

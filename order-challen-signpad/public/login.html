@@ -169,6 +169,9 @@
                     alert("Login Successful");
                     window.location.href = window.location.origin + '/DashBoard.html';
                 })
+            .catch(err=>{
+                alert("Login failed");
+            })
             return false;
         }
         else

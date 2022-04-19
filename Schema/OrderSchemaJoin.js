@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const Order = require('./orderSchema')
-const OrderDetail = require('./OrderDetailSchema');
+const orderData = './OrderDetailSchema'
+const OrderDetail = require(orderData);
 
 const connectionString = "mongodb://localhost:27017/Order_challen_signPad";
 
@@ -55,7 +56,7 @@ const crudOperatoin =  async ()=>{
     })
 
    const data = await Order.aggregate([
-        { $lookup :{
+    { $lookup :{
             from: 'orderdetails',
             localField: '_id',
             foreignField: 'OrderId',
