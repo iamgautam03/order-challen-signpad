@@ -1,8 +1,16 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Akshar:wght@300;400;500;600&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Akshar', sans-serif;
 }
 
-a {
-  color: #00B7FF;
+:root {
+  --my-black : #0f0f0f;
+  --my-yellow: #f9ab55;
+  --my-red: #df2935;
+  --my-purple: #7161ef;
+  --my-green: #1effbc;
 }

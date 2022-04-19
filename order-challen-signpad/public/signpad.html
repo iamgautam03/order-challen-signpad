@@ -11,59 +11,111 @@
             margin: 0;
             padding: 0;
         }
-        h3 {
-            margin: 2%;
-        }
-        h4, h5 {
-            margin: 1%;
-            font-weight: 500;
-        }
-        summary {
-            font-weight: 500;
-        }
-        ul li {
-            margin: 2%;
-        }
-        body {
-            width: 100%;
-            height: 100%;
-        }
-        button {
-            margin: 2%;
-            width: 100px;
-            height: 30px;
-        }
-        canvas {
-            margin-top: 1%;
-            border: 1px solid black;
-        }
-        div {
-            margin: 1%;
-            padding: 1%;
-            border: 1px solid black;
-            border-radius: 5px;
-        }
-        #items, .signpad-btns {
-            border: none;
-        }
-        .signpad-btns {
-            margin: 0;
-            display: flex;
-        }
-        .signpad-section {
+        .dashboard-container {
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
+        }
+        .business-container, .for-receiver {
+            padding: 1%;
+            margin: 10px;
+            border-radius: 5px;
+            background-color: #fcfcfc;
+            box-shadow: 0 0 4px #c9c9c9;
+        }
+        ul li {
+            margin: 5%;
+        }
+        button {
+            width: 128px;
+            height: 48px;
+            border: 2px solid #1effbc;
+            border-radius: 5px;
+            background-color: transparent;
+            font-weight: 600;
         }
         hr {
-            margin: 0% 1%;
+            margin: 2% 3% 2% 0%;
+            color: #7161ef;
+        }
+        canvas {
+            border: 2px solid #7161ef;
+            border-radius: 5px;
+        }
+        #sign_btn {
+            margin-top: 20px;
+            background-color: #1effbc;
+        }
+        .signpad-btns button{
+            margin: 1% 2% 1% 0%;
+        }
+        @media only screen and (min-width: 1200px) {
+            .business-container, .for-receiver {
+                margin: 20px 2%;
+            }
+            .business-container {
+                width: 20%;
+                min-height: 800px;
+            }
+            .for-receiver {
+                width: 80%;
+            }
+            .dashboard-container {
+                flex-direction: row;
+                align-items: flex-start;
+            }
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
 </head>
 <body>
-    <div class="order-details">
+    <div class="dashboard-container">
+        <div class="business-container">
+            <div class="company">
+                <hr />
+                <h1 id="companyName"></h1>
+                <hr />
+                <address id="companyAddress"></address>
+                <br />
+                <h4 id="companyGSTIN"></h4>
+                <hr>
+            </div>
+            <div class="order-details order-container">
+                <h2>Receiver Details:</h2>
+                <div class="grid">
+                    <h4 id="receiver-details"></h4>
+                </div>
+                <hr/>
+                <div class="grid">
+                    <h4>Order Details:</h4>
+                    <h4 id="order-total"></h4>
+                    <div id="items">
+                    </div>
+                </div>
+                <hr />
+            </div>
+            <div class="terms_conditions">
+                <br />
+                <h3>Terms and Conditions:</h3>
+                <ul>
+                    <li>Sign after you have received the order</li>
+                    <li>Please check that order is not damaged</li>
+                    <li>You sign is a proof that you have received the order properly</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="for-receiver">
+            <div class="signpad-section">
+                <canvas width="320" height="180" id="signpad"></canvas>
+                <br />
+                <div class="signpad-btns">
+                    <button id="clear_btn">Clear</button>
+                    <button id="sign_btn">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="order-details">
         <h1 id="companyName"></h1>
         <address id="companyAddress"></address>
         <h2 id="companyGSTIN"></h2>
@@ -77,23 +129,7 @@
         <h4 id="order-total"></h4>
         <hr/>
         <h4 id="receiver-details"></h4>
-    </div>
-    <div class="signpad-section">
-        <canvas width="320" height="180" id="signpad"></canvas>
-        <br />
-        <div class="signpad-btns">
-            <button id="clear_btn">Clear</button>
-            <button id="sign_btn">Submit</button>
-        </div>
-    </div>
-    <div class="terms_conditions">
-        <h3>Terms and Conditions:</h3>
-        <ul>
-            <li>Sign after you have received the order</li>
-            <li>Please check that order is not damaged</li>
-            <li>You sign is a proof that you have received the order properly</li>
-        </ul>
-    </div>
+    </div> -->
     <script>
         const canvas = document.querySelector("#signpad");
         const signPad = new SignaturePad(canvas);

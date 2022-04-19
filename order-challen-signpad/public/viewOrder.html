@@ -8,66 +8,103 @@
     <style>
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
-        .div, #items {
-            margin: 1%;
+        .dashboard-container {
+            display: flex;
+            flex-direction: column;
+        }
+        .business-container, .order-container {
             padding: 1%;
-        }
-        div.order-details {
-            border: 1px solid black;
+            margin: 10px;
             border-radius: 5px;
+            background-color: #fcfcfc;
+            box-shadow: 0 0 4px #c9c9c9;
         }
-        h3 {
-            margin: 1%;
+        .order-buttons {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            margin: 2% 3% 2% 0%;
         }
-        h4 ,h5 {
-            margin: 1%;
-            font-weight: 500;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: 80% 20%;
-        }
-        #companyGSTIN{
-            margin: 0%;
-            font-weight: bold;
+        .order-buttons > a {
+            padding: 1.25%;
+            margin: 0;
         }
         button {
-            margin: 1%;
-            height: 30px;
+            width: 128px;
+            height: 48px;
+            border: 2px solid #1effbc;
+            border-radius: 5px;
+            background-color: #1effbc;
+            font-weight: 600;
+        }
+        hr {
+            margin: 2% 3% 2% 0%;
+            color: #7161ef;
+        }
+        #sign_image {
+            border: 2px solid #1effbc;
+            border-radius: 5px;
+        }
+        @media only screen and (min-width: 1200px) {
+            .business-container, .order-container {
+                margin: 20px 2%;
+            }
+            .business-container {
+                width: 20%;
+                min-height: 800px;
+            }
+            .order-container {
+                width: 80%;
+            }
+            .dashboard-container {
+                flex-direction: row;
+                align-items: flex-start;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="div">
-        <h1 id="companyName">Order Challan</h1>
-        <h4 id="companyGSTIN"></h4>
-        <address id="companyAddress"></address>
-    </div>
-    <hr>
-
-    <div class="order-details div">
-        <div class="grid">
-            <h3 id="receiver-name"></h3>
-            <h3 id="order-id"></h3>
-            <h4 id="receiver-email"></h4>
-            <h4 id="order-date"></h4>
-        </div>
-        <hr/>
-        <div class="grid">
-            <h4>Order Details:</h4>
-            <h4 id="order-total"></h4>
-            <div id="items">
+    <div class="dashboard-container">
+        <div class="business-container">
+            <div class="company">
+                <hr />
+                <h1 id="companyName"></h1>
+                <hr />
+                <address id="companyAddress"></address>
+                <br />
+                <h4 id="companyGSTIN"></h4>
+                <hr>
             </div>
         </div>
-        <hr/>
-        <div class="grid" id="Signature">
-            <h3>Signature: </h3>
-            <br/>
-            <img src="" id="sign_image" width="320" height="180" alt="not-yet-signed" style="border: 1px solid black;" />
+        <div class="order-details order-container">
+            <div class="grid">
+                <h3 id="receiver-name"></h3>
+                <br />
+                <h3 id="order-id"></h3>
+                <br />
+                <h4 id="receiver-email"></h4>
+                <br />
+                <h4 id="order-date"></h4>
+            </div>
+            <hr/>
+            <div class="grid">
+                <h4>Order Details:</h4>
+                <h4 id="order-total"></h4>
+                <div id="items">
+                </div>
+            </div>
+            <hr/>
+            <div class="grid" id="Signature">
+                <h3>Signature: </h3>
+                <br/>
+                <img src="" id="sign_image" width="320" height="180" alt="not-yet-signed" />
+            </div>
+            <hr/>
+            <a href="DashBoard.html"><button>Back to DashBoard</button></a>
         </div>
-        <hr/>
-        <a href="DashBoard.html"><button>Back to DashBoard</button></a>
     </div>
     <script>
         const token = localStorage.getItem('token')

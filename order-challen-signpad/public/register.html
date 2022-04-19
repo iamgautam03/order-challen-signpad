@@ -7,6 +7,7 @@
         box-sizing: border-box;
         margin: 0;
         padding: 0;
+        font-family: 'Akshar', sans-serif;
     }
     body {
         width: 100%;
@@ -15,13 +16,14 @@
 
     label {
         font-size: 1.125em;
+        font-weight: 600;
     }
 
     input, textarea {
         margin: 2%;
         width: 96%;
-        padding: 0.5em;
-        border: 1px solid black;
+        padding: 0.75em;
+        border: 1px solid #7161ef;
         border-radius: 5px;
     }
 
@@ -31,9 +33,120 @@
         padding: 0.5em;
         font-size: 1.2em;
         background-color: white;
-        border: 1px solid black;
+        border: 1px solid #7161ef;
+        border-radius: 5px;
+        color: black;
+        font-weight: 600;
+    }
+    
+    a {
+        color: black;
+        text-decoration: none;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    h1 {
+        margin: 5%;
+        text-align: center;
+    }
+
+    form {
+        border: 3px solid #7161ef;
+        padding: 3%;
         border-radius: 5px;
     }
+
+    .item2 {
+        margin-top: 20px;
+        width: 90%;
+    }
+
+    @media only screen and (min-width: 576px) {
+        .item2 {
+            width: 80%;
+        }
+    }
+
+    @media only screen and (min-width: 768px) {
+        .item2 {
+            width: 60%;
+        }
+    }
+
+    @media only screen and (min-width: 992px) {
+        .item2 {
+            width: 50%;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .button-group button {
+            width: 96%;
+            margin: 2%;
+            padding: 1.5%;
+        }
+    }
+
+    @media only screen and (min-width: 1200px) {
+        .item2 {
+            width: 40%;
+        }
+        .button-group button {
+            margin: 3% 5%;
+        }
+    }
+
+    @media only screen and (min-width: 1700px) {
+        .item2 {
+            width: 30%;
+        }
+        .button-group button {
+            margin: 3% 10%;
+        }
+    }
+    body {
+        width: 100%;
+        height: 100%;
+    }
+
+    label {
+        font-size: 1.125em;
+        font-weight: 600;
+    }
+
+    input, textarea {
+        margin: 2%;
+        width: 96%;
+        padding: 0.75em;
+        border: 1px solid #7161ef;
+        border-radius: 5px;
+    }
+
+    button {
+        margin: 2%;
+        width: 96%;
+        padding: 0.5em;
+        font-size: 1.2em;
+        background-color: white;
+        border: 1px solid #7161ef;
+        border-radius: 5px;
+        color: black;
+        font-weight: 600;
+    }
+
+    #btnRegister {
+        border: 1px solid #1effbc;
+        background: #1effbc;
+    }
+
     a {
         color: black;
         text-decoration: none;
@@ -44,12 +157,14 @@
         justify-content: center;
         align-items: center;
     }
+
     h1 {
         margin: 5%;
         text-align: center;
     }
+
     form {
-        border: 1px solid black;
+        border: 3px solid #7161ef;
         padding: 3%;
         border-radius: 5px;
     }
@@ -118,14 +233,14 @@
                 <input type="textbox" name="businessname"><br/>
                 <label>Enter Business Address :</label><br/>
                 <textarea name="businessaddress"></textarea><br/>
-                <label>Enter E-mail :</label><br/>
+                <label>Enter Email :</label><br/>
                 <input type="textbox" name="email"><br/>
-                <label>Enter Gst no :</label><br/>
+                <label>Enter GSTNo :</label><br/>
                 <input type="textbox" name="gstno"><br/>
-                <label>Enter password :</label><br/>
+                <label>Enter Password :</label><br/>
                 <input type="password" name="password"><br/>
                 <div class="button-group">
-                    <button type="submit" name="registerbtn">
+                    <button type="submit" id="btnRegister" name="registerbtn">
                         Register
                     </button>
                     <button name="loginbtn">

@@ -24,7 +24,7 @@ orderRouter
     order.SignData = req.body.sign;
     order.save().then((order) => {
         console.log(req.body.sign);
-        console.log(order);
+        console.log(order)
         res.statusCode = 200;
         res.setHeader('content-type','application/json');
         res.send({

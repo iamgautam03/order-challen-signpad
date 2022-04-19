@@ -3,10 +3,12 @@
 <head>
 <title>Login</title>
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Akshar:wght@300;400;500;600&display=swap');
     * {
         box-sizing: border-box;
         margin: 0;
         padding: 0;
+        font-family: 'Akshar', sans-serif;
     }
     body {
         width: 100%;
@@ -15,13 +17,14 @@
 
     label {
         font-size: 1.125em;
+        font-weight: 600;
     }
 
     input, textarea {
         margin: 2%;
         width: 96%;
         padding: 0.75em;
-        border: 1px solid black;
+        border: 1px solid #7161ef;
         border-radius: 5px;
     }
 
@@ -31,13 +34,20 @@
         padding: 0.5em;
         font-size: 1.2em;
         background-color: white;
-        border: 1px solid black;
+        border: 1px solid #7161ef;
         border-radius: 5px;
+        color: black;
+        font-weight: 600;
     }
     
     a {
         color: black;
         text-decoration: none;
+    }
+
+    #btnLogin {
+        border: 1px solid #1effbc;
+        background: #1effbc;
     }
 
     .container {
@@ -53,7 +63,7 @@
     }
 
     form {
-        border: 1px solid black;
+        border: 3px solid #7161ef;
         padding: 3%;
         border-radius: 5px;
     }
@@ -119,13 +129,13 @@
             <form onsubmit="return authenticate()" action="DashBoard.html" method="post" name="loginform">
                 <label>Enter E-mail : </label><br/>
                 <input type="textbox" name="email"><br/>
-                <label>Enter password : </label><br/>
+                <label>Enter Password : </label><br/>
                 <input type="password" name="password"><br/>
                 <div class="button-group">
-                    <button type="submit" name="loginbtn">
+                    <button type="submit" name="loginbtn" id="btnLogin">
                         Login
                     </button>
-                    <button name="registerbtn">
+                    <button name="registerbtn" id="btnRegister">
                         <a href="register.html">Register</a>
                     </button>
                 </div>
