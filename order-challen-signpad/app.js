@@ -2,7 +2,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
+const config = require('./config')
 const mongoose = require('mongoose');
 
 const connectionString = "mongodb://localhost:27017/Order_challen_signPad";
@@ -13,7 +13,7 @@ var orderRouter = require('./routes/orders')
 var orderDetailRouter = require('./routes/orderDetails');
 var authRouter = require('./routes/authentication');
 var app = express();
-const connection = mongoose.connect(connectionString);
+const connection = mongoose.connect(config.Mongo);
 
 connection.then((db)=>{
     console.log("Database connected Sucessfully");

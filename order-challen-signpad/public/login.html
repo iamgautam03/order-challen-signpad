@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login</title>
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Akshar:wght@300;400;500;600&display=swap');
@@ -68,6 +71,9 @@
         border-radius: 5px;
     }
 
+    button:hover{
+        cursor: pointer;
+    }
     .item2 {
         margin-top: 20px;
         width: 90%;
@@ -126,16 +132,16 @@
             <h1>Welcome To Order Challen SignPad</h1>
         </div>
         <div class="item2">
-            <form onsubmit="return authenticate()" action="DashBoard.html" method="post" name="loginform">
+            <form onsubmit="return false" action="DashBoard.html" method="post" name="loginform">
                 <label>Enter E-mail : </label><br/>
                 <input type="textbox" name="email"><br/>
                 <label>Enter Password : </label><br/>
                 <input type="password" name="password"><br/>
                 <div class="button-group">
-                    <button type="submit" name="loginbtn" id="btnLogin">
+                    <button type="submit" name="loginbtn" id="btnLogin" onclick="authenticate()">
                         Login
                     </button>
-                    <button name="registerbtn" id="btnRegister">
+                    <button  name="registerbtn" id="btnRegister" onclick="redirect('/register.html')">
                         <a href="register.html">Register</a>
                     </button>
                 </div>
@@ -143,7 +149,9 @@
         </div>
     </div>
 <script>
-
+    function redirect(url){
+        window.location.href = window.location.origin + url;
+    }
     function checkPreviousSession(){
         if(localStorage.getItem('token')){
             window.location.href = window.location.origin + '/DashBoard.html';

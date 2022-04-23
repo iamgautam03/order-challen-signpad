@@ -2,7 +2,7 @@ const express = require('express');
 const orderRouter = express.Router();
 const {generateLinkToken,verifyLinkToken} = require('../helpers/link');
 const Order = require('../models/Order');
-
+const mongoose =require('mongoose')
 const VerifyJwt = require('../middleware/VerifyJwt')
 const OrderDetails = require("../models/OrderDetail");
 orderRouter.use(express.json());
@@ -10,6 +10,8 @@ orderRouter.use(express.urlencoded({extended:false}));
 
 orderRouter
 .get('/',VerifyJwt,(req,res,next) => {
+    // console.log(req.headers)
+
     Order.find({CompanyId: req.user._id})
     .then((orders)=>{
         res.statusCode=200;
@@ -23,8 +25,8 @@ orderRouter
     order.SignStatus = true;
     order.SignData = req.body.sign;
     order.save().then((order) => {
-        console.log(req.body.sign);
-        console.log(order)
+        // console.log(req.body.sign);
+        // console.log(order)
         res.statusCode = 200;
         res.setHeader('content-type','application/json');
         res.send({
@@ -60,7 +62,9 @@ orderRouter
                 })
         });
         const send = require('../mails/SignpadLink');
-        send(order.ReceiverEmail,order.GeneratedLink);
+        var reg = new RegExp("[a-z:\\/]+[a-z.:0-9]+")
+        var m = reg.exec(req.headers.referer);
+        send(order.ReceiverEmail,order.GeneratedLink,m[0]);
         res.statusCode=200;
         res.setHeader('content-type','application/json');
         res.send({

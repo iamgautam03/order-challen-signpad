@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Register</title>
 <style>
     * {
@@ -162,7 +165,9 @@
         margin: 5%;
         text-align: center;
     }
-
+    button:hover{
+        cursor: pointer;
+    }
     form {
         border: 3px solid #7161ef;
         padding: 3%;
@@ -228,7 +233,7 @@
             <h1>Welcome To Order Challen SignPad</h1>
         </div>
         <div class="item2">
-            <form onsubmit="return addUser()" action="login.html" method="post" name="registerform">
+            <form onsubmit="return false" action="login.html" method="post" name="registerform">
                 <label>Enter Business Name:</label><br/>
                 <input type="textbox" name="businessname"><br/>
                 <label>Enter Business Address :</label><br/>
@@ -240,10 +245,10 @@
                 <label>Enter Password :</label><br/>
                 <input type="password" name="password"><br/>
                 <div class="button-group">
-                    <button type="submit" id="btnRegister" name="registerbtn">
+                    <button type="submit" id="btnRegister" name="registerbtn" onclick="addUser()">
                         Register
                     </button>
-                    <button name="loginbtn">
+                    <button name="loginbtn" onclick="redirect('/login.html')">
                         <a href="login.html">Login</a>
                     </button>
                 </div>
@@ -251,7 +256,10 @@
         </div>
     </div>
 <script>
-    
+
+    function redirect(url){
+        window.location.href = window.location.origin + url;
+    }
     function addUser()
     {
         var form = document.forms["registerform"];

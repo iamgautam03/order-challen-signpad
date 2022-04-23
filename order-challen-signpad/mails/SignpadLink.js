@@ -17,11 +17,11 @@ var MailOption= {
     disableUrlAccess:false
 }
 
-const send = (email,token)=>{
+const send = (email,token,host)=>{
     MailConfig.sendMail({
         ...MailOption,
         to:email,
-        html:"Order Challan sign pad link <a href='http://localhost:3000/signpad.html?token=" + token + "'>Click Here</a>"
+        html:"Order Challan sign pad link <a href='"+host+"/signpad.html?token=" + token + "'>Click Here</a>"
     },function (error, info) {
         if (error) {
             console.warn(error);

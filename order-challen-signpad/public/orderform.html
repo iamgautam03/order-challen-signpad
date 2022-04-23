@@ -39,6 +39,9 @@
         input:focus {
             border-color: #7161ef;
         }
+        button:hover{
+            cursor: pointer;
+        }
         button {
             border: 2px solid #1effbc;
             background: #1effbc;
@@ -183,6 +186,9 @@
     </form>
     <script>
         const token = localStorage.getItem("token")
+        if(!token){
+            window.location.href= window.location.origin+"/login.html";
+        }
         function setBusinessDetails() {
             fetch("/users", {method: 'GET',
                 headers: {
@@ -282,6 +288,7 @@
             .then((resposnse) => {
                 var link = `${window.location.origin}/signpad.html?token=${resposnse.link}`;
                 document.getElementById('gen_link').value = link;
+                document.getElementById('cpy_to_clpbrd_btn').style.display="inline-block";
                 console.log(resposnse);
             }).catch((error) => {
                 console.error(error);
@@ -292,12 +299,17 @@
             const link = document.getElementById('gen_link');
             link.select();
             link.setSelectionRange(0, 99999);
-            navigator.clipboard.writeText(link.value);
-            alert("Copied To Clipboard");
+            if(link.value!=="") {
+                navigator.clipboard.writeText(link.value);
+                alert("Copied To Clipboard");
+            }
+            else
+                alert("generate order first");
         }
 
         document.getElementById('gen_lnk_btn').addEventListener('click', generateLink);
         document.getElementById('cpy_to_clpbrd_btn').addEventListener('click', copyToClipboard);
+        document.getElementById('cpy_to_clpbrd_btn').style.display="none";
         document.getElementById('add_row_btn').addEventListener('click', addRow);
         document.getElementById('remove_row_btn').addEventListener('click', removeRow);
     </script>
