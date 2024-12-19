@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>viewOrder</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        .dashboard-container {
+            display: flex;
+            flex-direction: column;
+        }
+        .business-container, .order-container {
+            padding: 1%;
+            margin: 10px;
+            border-radius: 5px;
+            background-color: #fcfcfc;
+            box-shadow: 0 0 4px #c9c9c9;
+        }
+        button:hover{
+            cursor: pointer;
+        }
+        .order-buttons {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            margin: 2% 3% 2% 0%;
+        }
+        .order-buttons > a {
+            padding: 1.25%;
+            margin: 0;
+        }
+        button {
+            width: 128px;
+            height: 48px;
+            border: 2px solid #1effbc;
+            border-radius: 5px;
+            background-color: #1effbc;
+            font-weight: 600;
+        }
+        hr {
+            margin: 2% 3% 2% 0%;
+            color: #7161ef;
+        }
+        #sign_image {
+            border: 2px solid #1effbc;
+            border-radius: 5px;
+        }
+        @media only screen and (min-width: 1200px) {
+            .business-container, .order-container {
+                margin: 20px 2%;
+            }
+            .business-container {
+                width: 20%;
+                min-height: 800px;
+            }
+            .order-container {
+                width: 80%;
+            }
+            .dashboard-container {
+                flex-direction: row;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="business-container">
+            <div class="company">
+                <hr />
+                <h1 id="companyName"></h1>
+                <hr />
+                <address id="companyAddress"></address>
+                <br />
+                <h4 id="companyGSTIN"></h4>
+                <hr>
+            </div>
+        </div>
+        <div class="order-details order-container">
+            <div class="grid">
+                <h3 id="receiver-name"></h3>
+                <br />
+                <h3 id="order-id"></h3>
+                <br />
+                <h4 id="receiver-email"></h4>
+                <br />
+                <h4 id="order-date"></h4>
+            </div>
+            <hr/>
+            <div class="grid">
+                <h4>Order Details:</h4>
+                <h4 id="order-total"></h4>
+                <div id="items">
+                </div>
+            </div>
+            <hr/>
+            <div class="grid" id="Signature">
+                <h3>Signature: </h3>
+                <br/>
+                <img src="" id="sign_image" width="320" height="180" alt="not-yet-signed" />
+            </div>
+            <hr/>
+            <a href="DashBoard.html"><button>Back to DashBoard</button></a>
+        </div>
+    </div>
+    <script>
+        const token = localStorage.getItem('token')
+        if(!token){
+            window.location.href= window.location.origin+"/login.html";
+        }
+        var BusinessData={
+            businessName:"Expert Logistics India Pvt. Ltd.",
+            businessAddr:"Street:2/f, 2nd Floor, Naaz Cinema Bldg, Lamington Road, Lamington Road \nCity: Mumbai \nState/province/area: Maharashtra \nPhone number 02223861571 \nZip code 400004 \nCountry calling code +91 \nCountry India"
+        }
+        const status = [];
+        status[0]= "sign pending";
+        status[1]= "siged";
+
+        function setBusinessDetails() {
+            //     document.getElementById('companyName').innerHTML=BusinessData.businessName;
+            //     document.getElementById('companyAddress').innerHTML=BusinessData.businessAddr.replaceAll(
+            //         '\n',"<br>"
+            //     );
+            // }
+
+            fetch(`/users`, {
+                method: 'GET',
+                headers: {
+                    'content-type': "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            })
+                .then(Response => Response.json())
+                .then((response) => {
+                    console.log(response);
+                    document.getElementById('companyName').textContent = response.BusinessName;
+                    document.getElementById('companyGSTIN').textContent = "GSTIN: " + response.GSTIN;
+                    document.getElementById('companyAddress').innerHTML = response.BusinessAddress.replaceAll(
+                        '\n',"<br>"
+                    );;
+                }).catch((error) => {
+                console.error(error);
+            });
+        }
+        setBusinessDetails()
+
+        function getItemNode(item) {
+            var details = document.createElement('details');
+            var summery = document.createElement('summary');
+
+            summery.textContent = item.ItemName;
+
+            var h5Qty = document.createElement('h5');
+            h5Qty.classList.add('qty');
+            h5Qty.textContent = "Quantity: " + item.ItemQuantity;
+
+            var h5Price = document.createElement('h5');
+            h5Price.classList.add('price');
+            h5Price.textContent = "Price: " + item.ItemQuantity;
+            
+            details.appendChild(summery);
+            details.appendChild(h5Qty);
+            details.appendChild(h5Price);
+
+            return details;
+        }
+
+        function loadOrderDetails() {
+
+            const OrderId = new URLSearchParams(window.location.search).get('OrderId')
+            console.log(OrderId);
+             fetch('/api/orders/'+OrderId,{
+                 method:"GET",
+                 headers:{
+                     Authorization:`Bearer ${token}`
+                 }
+             })
+            .then(Response=>Response.json())
+            .then((order)=>{
+                console.log(order)
+                if(order.error){
+                    window.location.href = window.location.origin + '/notfound.html';
+                }
+
+                fetch(`/api/orders/orderDetails/${order._id}`)
+                .then(Response => Response.json())
+                .then((orderDetails)=>{
+                    orderDetails.forEach(item => {
+                        document.getElementById('items').appendChild(getItemNode(item));
+                    });
+                })
+                .catch(err=>console.log(err));
+
+                document.getElementById('receiver-name').textContent = "Receiver's Name: " + order.ReceiverName;
+                document.getElementById('receiver-email').textContent = "Receiver's Email: " + order.ReceiverEmail;
+                document.getElementById('order-id').textContent = "OrderID: " + order.OrderId;
+                document.getElementById('order-date').textContent = "Order Date: " + new Intl.DateTimeFormat('en-US',{
+                    year:'numeric',
+                    month:'long',
+                    day:'2-digit'
+                }).format(new Date(order.OrderDate));
+                document.getElementById('order-total').textContent = "Total: " + order.OrderTotal;
+                console.log(order);
+                if(order.SignData){
+                document.getElementById('sign_image').src = order.SignData;
+                    }
+                else{
+                    document.getElementById('Signature').style.display="none";
+                }
+            })
+            .catch(err=>console.log(err))
+        }
+
+        loadOrderDetails()
+    </script>
+</body>
+</html>

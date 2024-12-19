@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DashBoard</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        /* table {
+            width: 100%;
+        }
+        th, td {
+            border-bottom: 1px solid black;
+        }
+        #tableBody {
+            text-align: center;
+        } */
+        button {
+            margin: 2%;
+            height: 40px;
+        }
+        h2 {
+            margin-left: 2%;
+        }
+        .div {
+            margin: 1%;
+            padding: 1%;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 85% 15%;
+        }
+        .container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .company {
+            width: 100%;
+            margin: 2%;
+        }
+        .before-table {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0% 3%;
+        }
+        .order-table {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #companyGSTIN {
+            margin: 0%;
+            font-weight: bold;
+        }
+        .link-group {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .dashboard-container {
+            display: flex;
+            flex-direction: column;
+        }
+        .business-container, .order-container {
+            padding: 1%;
+            margin: 10px;
+            border-radius: 5px;
+            background-color: #fcfcfc;
+            box-shadow: 0 0 4px #c9c9c9;
+        }
+        .order-container {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+        .order-buttons {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            margin: 2% 3% 2% 0%;
+        }
+        .order-buttons > a {
+            padding: 1.25%;
+            margin: 0;
+        }
+        .order-buttons button {
+            width: 128px;
+            height: 48px;
+            border: 2px solid #1effbc;
+            border-radius: 5px;
+            background-color: transparent;
+            font-weight: 600;
+        }
+        #addOrderButton {
+            background-color: #1effbc;
+        }
+        .company hr {
+            margin: 2% 3% 2% 0%;
+            color: #7161ef;
+        }
+        button:hover{
+            cursor: pointer;
+        }
+        .order-table table {
+            width: 100%;
+            margin: 2%;
+            table-layout: fixed;
+            border: 2px solid #7161ef;
+            border-radius: 5px;
+            overflow-wrap: break-word;
+            font-size: 0.75em;
+            text-align: center;
+            padding: 2%;
+        }
+        .order-table td,th {
+            border-radius: 5px;
+            background-color: #fcfcfc;
+            box-shadow: 0 0 5px #c9c9c9;
+        }
+
+        .view-order-btn {
+            border: 2px solid #1effbc;
+            border-radius: 5px;
+            background-color: #1effbc;
+            box-shadow: 0 0 5px #c9c9c9;
+        }
+
+        @media only screen and (min-width: 576px) {
+            .order-table table {
+                font-size: 0.9em;
+            }
+        }
+
+        @media only screen and (min-width: 768px) {
+            .order-table table {
+                font-size: 1em;
+            }
+        }
+
+        @media only screen and (min-width: 992px) {
+            .business-container, .order-container {
+                margin: 20px 10%;
+            }
+        }
+
+        @media only screen and (min-width: 1200px) {
+            .business-container, .order-container {
+                margin: 20px 2%;
+            }
+            .business-container {
+                width: 20%;
+                min-height: 800px;
+            }
+            .order-container {
+                width: 80%;
+            }
+            .dashboard-container {
+                flex-direction: row;
+                align-items: flex-start;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="business-container">
+            <div class="company">
+                <hr />
+                <h1 id="companyName"></h1>
+                <hr />
+                <address id="companyAddress"></address>
+                <br />
+                <h4 id="companyGSTIN"></h4>
+                <hr>
+                <div class="order-buttons">
+                    <a href="logout.html">
+                        <button id="logoutButton">Logout</button>
+                    </a>
+                    <a href="orderform.html">
+                        <button id="addOrderButton">Add Order</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="order-container">
+            <div class="order-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Receiver's Name</th>
+                            <th>Receiver's Email</th>
+                            <th>Order date</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+            
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>
+
+        const token = localStorage.getItem('token');
+        if(!token){
+            window.location.href= window.location.origin+"/login.html";
+        }
+        var BusinessData={
+            businessName:"Expert Logistics India Pvt. Ltd.",
+            businessAddr:"Street:2/f, 2nd Floor, Naaz Cinema Bldg, Lamington Road, Lamington Road \nCity: Mumbai \nState/province/area: Maharashtra \nPhone number 02223861571 \nZip code 400004 \nCountry calling code +91 \nCountry India"
+        }
+        const status = [];
+        status[0]= "Pending";
+        status[1]= "Signed";
+
+        function setBusinessDetails() {
+            //     document.getElementById('companyName').innerHTML=BusinessData.businessName;
+            //     document.getElementById('companyAddress').innerHTML=BusinessData.businessAddr.replaceAll(
+            //         '\n',"<br>"
+            //     );
+            // }
+            fetch(`/users`, {
+                method: 'GET',
+                headers: {
+                    'content-type': "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            })
+                .then(Response => Response.json())
+                .then((response) => {
+                    console.log(response);
+                    document.getElementById('companyName').textContent = response.BusinessName;
+                    document.getElementById('companyGSTIN').textContent = "GSTIN: " + response.GSTIN;
+                    document.getElementById('companyAddress').innerHTML = response.BusinessAddress.replaceAll(
+                            '\n',"<br>"
+                        );
+                }).catch((error) => {
+                console.error(error);
+            });
+        }
+        setBusinessDetails()
+
+        // function fillUpOrderChallanTable(){
+        //     var tbody = document.getElementById("tableBody");
+        //
+        //     for(var i=0;i<orderChallan.length;i++){
+        //         var tr = document.createElement('tr');
+        //
+        //         for (const [key, value] of Object.entries(orderChallan[i])) {
+        //             var td = document.createElement('td');
+        //             if(key === "status"){
+        //                 td.innerHTML=status[value];
+        //                 tr.appendChild(td);
+        //                 continue;
+        //             }
+        //             td.innerHTML=value;
+        //             tr.appendChild(td);
+        //         }
+        //         var td = document.createElement('td');
+        //
+        //         var button =  document.createElement('a');
+        //         button.innerHTML="<button>View Order</button>";
+        //         button.href="viewOrder.html";
+        //         td.appendChild(button)
+        //         tr.appendChild(td);
+        //         tbody.appendChild(tr);
+        //     }
+        // }
+
+        function updateOrderChallanTable(){
+            const token = localStorage.getItem("token")
+            console.log(token)
+            fetch('/api/orders',{
+                method:"GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            .then(Response=>Response.json())
+            .then((orders)=>{
+                console.log(orders);
+                var tbody = document.getElementById("tableBody");
+                const orderOfdisplay=["OrderId","ReceiverName","ReceiverEmail","OrderDate","OrderTotal","SignStatus"];
+                orders.forEach((order)=>{
+                    var tr = document.createElement('tr');
+                    for(var i=0;i<orderOfdisplay.length;i++){
+                        var td = document.createElement('td');
+                        if(orderOfdisplay[i] === "SignStatus"){
+                            td.innerHTML=status[order[orderOfdisplay[i]]?1:0];
+                            tr.appendChild(td);
+                            continue;
+                        }
+                        if(orderOfdisplay[i]=== "OrderDate"){
+                            td.innerHTML= new Intl.DateTimeFormat('en-US',{
+                                year:'numeric',
+                                month:'long',
+                                day:'2-digit'
+                            }).format(new Date(order.OrderDate));
+                            tr.appendChild(td);
+                            continue;
+                        }
+                        td.innerHTML=order[orderOfdisplay[i]];
+                        tr.appendChild(td);
+                    }
+                    var td = document.createElement('td');
+
+                    var button =  document.createElement('a');
+                    button.innerHTML="<button class='view-order-btn'>View Order</button>";
+                    button.href="viewOrder.html?OrderId="+order[orderOfdisplay[0]];
+                    td.appendChild(button)
+                    tr.appendChild(td);
+                    tbody.appendChild(tr);  
+                })
+            })
+            .catch(err=>{
+                window.location.href = window.location.origin + '/login.html';
+                console.log(data)}
+            )
+        }
+        updateOrderChallanTable();
+
+    </script>
+</body>
+</html>

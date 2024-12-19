@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Form</title>
+    <style>
+        body {
+            width: 100%;
+            height: 100%;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        fieldset {
+            border: 2px solid #7161ef;
+            margin: 3%;
+            padding: 2%;
+            border-radius: 7px;
+        }
+        #order-details-tab {
+            margin: 2%;
+        }
+        legend {
+            font-size: 1.25em;
+            margin: 0% 3%;
+            padding: 1.5%;
+        }
+        input, textarea {
+            border: 1px solid black;
+            padding: 1%;
+            border-radius: 5px;
+            width: 100%;
+            margin: 0.5% 0% 1% 0%;
+        }
+        input:focus {
+            border-color: #7161ef;
+        }
+        button:hover{
+            cursor: pointer;
+        }
+        button {
+            border: 2px solid #1effbc;
+            background: #1effbc;
+            margin: 1% 0%;
+            width: 100px;
+            height: 30px;
+            border-radius: 5px;
+        }
+        #add_row_btn {
+            margin-right: 1%;
+        }
+        .table-row {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .table-col {
+            display: flex;
+            flex-direction: row;
+        }
+    </style>
+</head>
+<body>
+    <form method="POST">
+        <fieldset>
+            <legend>Business Details</legend>
+            <div class="input-table-view">
+                <div class="table-row">
+                    <div class="table-col">
+                        <label for="bussiness-name">Business Name: </label>
+                    </div>
+                    <div class="table-col">
+                        <input type="text" name="bussiness-name" readonly disabled/>
+                    </div>
+                </div>
+                <div class="table-row">
+                    <div class="table-col">
+                        <label for="bussiness-gstin">Business GSTIN: </label>
+                    </div>
+                    <div class="table-col">
+                        <input type="text" name="bussiness-gstin" readonly disabled/>
+                    </div>
+                </div>
+                <div class="table-row">
+                    <div class="table-col">
+                        <label for="bussiness-addr">Business Address: </label>
+                    </div>
+                    <div class="table-col">
+                        <textarea name="bussiness-addr" rows="5" cols="50" disabled readonly></textarea>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Order Details</legend>
+            <div class="input-table-view">
+                <div class="table-row">
+                    <div class="table-col">
+                        <label for="order-id">Order ID: </label>
+                    </div>
+                    <div class="table-col">
+                        <input type="text" name="order-id" />
+                    </div>
+                </div>
+                <div class="table-row">
+                    <div class="table-col">
+                        <label for="order-date">Order Date: </label>
+                    </div>
+                    <div class="table-col">
+                        <input type="date" name="order-date" />
+                    </div>
+                </div>
+                <fieldset id="order-details-tab">
+                    <legend>Item Details</legend>
+                    <div id="first-order-detail-row" class="table-row">
+                        <div class="table-col">
+                            <label for="item-name">Item Name: </label>
+                        </div>
+                        <div class="table-col">
+                            <input type="text" name="item-name" />
+                        </div>
+                        <div class="table-col">
+                            <label for="item-price">Item Price: </label>
+                        </div>
+                        <div class="table-col">
+                            <input type="number" name="item-price" min="1" />
+                        </div>
+                        <div class="table-col">
+                            <label for="item-qty">Item Quantity: </label>
+                        </div>
+                        <div class="table-col">
+                            <input type="text" name="item-qty" />
+                        </div>
+                    </div>
+                    <div class="table-row">
+                        <div class="table-col">
+                            <button id="add_row_btn" type="button">Add Row</button>
+                            <button id="remove_row_btn" type="button">Remove Row</button>
+                        </div>
+                    </div>
+                </fieldset>
+                <div class="table-row">
+                    <div class="table-col">
+                        <label for="order-total">Total: </label>
+                    </div>
+                    <div class="table-col">
+                        <input type="number" name="order-total"/>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Receiver's Details</legend>
+            <div class="input-table-view">
+                <div class="table-row">
+                    <div class="table-col">
+                        <label for="receiver-name">Receiver's Name: </label>
+                    </div>
+                    <div class="table-col">
+                        <input type="text" name="receiver-name" />
+                    </div>
+                </div>
+                <div class="table-row">
+                    <div class="table-col">
+                        <label for="receiver-email">Receiver's Email: </label>
+                    </div>
+                    <div class="table-col">
+                        <input type="email" name="receiver-email" />
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Link</legend>
+            <input id="gen_link" type="text" readonly disabled/>
+            <br>
+            <button id="cpy_to_clpbrd_btn" type="button">Copy Link</button>
+            <button id="gen_lnk_btn" type="button">Generate Link</button>
+<!--            <button  type="button"> DashBoard</button>-->
+            <a href="DashBoard.html"><button type="button" > DashBoard</button></a>
+        </fieldset>
+    </form>
+    <script>
+        const token = localStorage.getItem("token")
+        if(!token){
+            window.location.href= window.location.origin+"/login.html";
+        }
+        function setBusinessDetails() {
+            fetch("/users", {method: 'GET',
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            })
+                .then(Response=>Response.json())
+                .then((response) => {
+                    document.querySelector('input[name="bussiness-name"]').value = response.BusinessName;
+                    document.querySelector('textarea[name="bussiness-addr"]').value = response.BusinessAddress;
+                    document.querySelector('input[name="bussiness-gstin"]').value = response.GSTIN;
+                }).catch((error) => {
+                    console.error(error);
+            });
+        }
+        setBusinessDetails();
+
+        function addRow() {
+            var rowDiv = document.createElement('div');
+            var lableEle = document.createElement('label');
+            var inputEle = document.createElement('input');
+            inputEle.type = 'number';
+            inputEle.min = 1;
+
+            var colDiv = new Array();
+
+            for (var i=0; i<6; i++) {
+                colDiv[i] = rowDiv.cloneNode();
+                colDiv[i].classList.add('table-col');
+                if (i % 2 == 0) {
+                    colDiv[i].appendChild(lableEle.cloneNode());
+                }
+                else {
+                    colDiv[i].appendChild(inputEle.cloneNode());
+                }
+                rowDiv.appendChild(colDiv[i]);
+            }
+
+            rowDiv.childNodes[0].childNodes[0].innerText = "Item Name:";
+            rowDiv.childNodes[2].childNodes[0].innerText = "Enter Price:";
+            rowDiv.childNodes[4].childNodes[0].innerText = "Enter Quantity:";
+            rowDiv.childNodes[1].childNodes[0].name = "item-name";
+            rowDiv.childNodes[1].childNodes[0].type = "text";
+            rowDiv.childNodes[3].childNodes[0].name = "item-price";
+            rowDiv.childNodes[5].childNodes[0].name = "item-qty";
+            rowDiv.childNodes[0].childNodes[0].htmlFor = "item-name";
+            rowDiv.childNodes[2].childNodes[0].htmlFor = "item-price";
+            rowDiv.childNodes[4].childNodes[0].htmlFor = "item-qty";
+            rowDiv.classList.add('table-row');
+
+            var orderDetailsTabEle = document.getElementById('order-details-tab'); 
+            orderDetailsTabEle.insertBefore(rowDiv, orderDetailsTabEle.lastElementChild);
+            
+        }
+
+        function removeRow() {
+            var toBeRemoved = document.getElementById('order-details-tab').lastElementChild.previousElementSibling;
+            if (toBeRemoved.id !== "first-order-detail-row")
+                toBeRemoved.remove();
+        }
+
+        function generateLink() {
+            var itemNames = document.querySelectorAll('input[name="item-name"]');
+            var itemPrices = document.querySelectorAll('input[name="item-price"]');
+            var itemQtys = document.querySelectorAll('input[name="item-qty"]');
+
+            var len = itemNames.length;
+
+            orders = new Array(len);
+            for (var i=0; i<len; i++) {
+                orders[i] = {
+                    ItemName: itemNames[i].value,
+                    ItemQuantity: itemQtys[i].value,
+                    ItemPrice: itemPrices[i].value
+                };
+            }
+
+            var dataToSend = {
+                orderDetails: orders,
+                orderId: document.querySelector('input[name="order-id"]').value,
+                orderDate : document.querySelector('input[name="order-date"]').value,
+                receiverName: document.querySelector('input[name="receiver-name"]').value,
+                receiverEmail: document.querySelector('input[name="receiver-email"]').value,
+                total: document.querySelector('input[name="order-total"]').value,
+            };
+
+            fetch("/api/orders/add", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify(dataToSend)
+            })
+            .then(Response=>Response.json())
+            .then((resposnse) => {
+                var link = `${window.location.origin}/signpad.html?token=${resposnse.link}`;
+                document.getElementById('gen_link').value = link;
+                document.getElementById('cpy_to_clpbrd_btn').style.display="inline-block";
+                console.log(resposnse);
+            }).catch((error) => {
+                console.error(error);
+            });
+        }
+
+        function copyToClipboard() {
+            const link = document.getElementById('gen_link');
+            link.select();
+            link.setSelectionRange(0, 99999);
+            if(link.value!=="") {
+                navigator.clipboard.writeText(link.value);
+                alert("Copied To Clipboard");
+            }
+            else
+                alert("generate order first");
+        }
+
+        document.getElementById('gen_lnk_btn').addEventListener('click', generateLink);
+        document.getElementById('cpy_to_clpbrd_btn').addEventListener('click', copyToClipboard);
+        document.getElementById('cpy_to_clpbrd_btn').style.display="none";
+        document.getElementById('add_row_btn').addEventListener('click', addRow);
+        document.getElementById('remove_row_btn').addEventListener('click', removeRow);
+    </script>
+</body>
+</html>
